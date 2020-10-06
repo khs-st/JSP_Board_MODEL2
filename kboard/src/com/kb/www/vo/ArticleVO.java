@@ -3,12 +3,12 @@ package com.kb.www.vo;
 public class ArticleVO {
 	// 글번호
 	private int ArticleNum;
-    //사용자의 고유코드
+	// 사용자의 고유코드
 	private int mb_sq;
-	// 작성자
-	private String id;
 	// 글 제목
 	private String ArticleTitle;
+	// 작성자
+	private String id;
 	// 글 내용
 	private String ArticleContent;
 	// 조회수
@@ -29,7 +29,6 @@ public class ArticleVO {
 		ArticleNum = articleNum;
 	}
 
-	
 	public int getMb_sq() {
 		return mb_sq;
 	}
