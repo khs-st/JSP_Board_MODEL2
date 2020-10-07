@@ -61,8 +61,24 @@ create table member(
 sq int auto_increment primary key,
 mb_id varchar(50),
 mb_pw varchar(200),
+mb_name varchar(20),
+mb_email varchar(100),
+mb_gender varchar(20),
 login_st tinyint default 0,
 leave_fl tinyint default 0);
+
+/*
+CREATE TABLE `board` (
+  `userID` varchar(30) NOT NULL,
+  `userPassword` varchar(20) DEFAULT NULL,
+  `userName` varchar(20) DEFAULT NULL,
+  `userGender` varchar(20) DEFAULT NULL,
+  `userEmail` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`userID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+*/
+
 
 
 member_history의 mb_sq가 외래키로 member 테이블의 sq참조
@@ -92,6 +108,16 @@ mb_sq int,
 comment_content text);
 
 
+페이징처리
+pstmt = con.prepareStatement("select " + "b.num" +
+                    ",m.mb_id," +
+                    "b.subject," +
+                    "b.hit," +
+                    "b.wdate," +
+                    "b.udate," +
+                    "b.ddate" +
+                    " from boardtest b" +
+                    " inner join member m on b.mb_sq = m.sq"+" order by num desc"+" limit 0,10");
 
 
-
+page=(page-1)*10

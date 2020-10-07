@@ -5,6 +5,9 @@ public class MemberHistoryVO {
 	private int mb_sq;
 	private int evt_type;
 	private String dttm;
+	private String name;
+	private String email;
+	private String gender;
 
 	public int getSq() {
 		return sq;
@@ -36,6 +39,30 @@ public class MemberHistoryVO {
 
 	public void setDttm(String dttm) {
 		this.dttm = dttm;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 }

@@ -6,7 +6,12 @@ public class MemberVO {
 	private String mb_pw;
 	private boolean login_st;
 	private boolean leave_fl;
-
+	private String mb_name;
+	private String mb_email;
+	private String mb_gender;
+	
+	
+	
 	public int getMb_sq() {
 		return mb_sq;
 	}
@@ -46,4 +51,29 @@ public class MemberVO {
 	public void setLeave_fl(boolean leave_fl) {
 		this.leave_fl = leave_fl;
 	}
+
+	public String getMb_name() {
+		return mb_name;
+	}
+
+	public void setMb_name(String mb_name) {
+		this.mb_name = mb_name;
+	}
+
+	public String getMb_email() {
+		return mb_email;
+	}
+
+	public void setMb_email(String mb_email) {
+		this.mb_email = mb_email;
+	}
+
+	public String getMb_gender() {
+		return mb_gender;
+	}
+
+	public void setMb_gender(String mb_gender) {
+		this.mb_gender = mb_gender;
+	}
+	
 }

@@ -19,7 +19,6 @@ public class BoardService {
 		dao.setConnection(con);
 		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
 		boolean isSuccess = false;
-
 		int count_01 = dao.insertMember(memberVO);
 		memberHistoryVO.setMb_sq(dao.getMemberSequence(memberVO.getMb_id()));
 		// auto increment인 mb_sq를 Memberhistory 테이블에 저장!
@@ -130,4 +129,17 @@ public class BoardService {
 		close(con);
 		return article;
 	}
+	
+	//Member History
+    public ArrayList<MemberHistoryVO> getMemberHistory(String id) {
+        BoardDAO dao = BoardDAO.getInstance();
+        //JdbcUtil의 getConnection을 이용해서 mysqldb와 연결
+        Connection con = getConnection();
+        //dao와 mysqldb의 데이터를 con을 이용해서 공유
+        dao.setConnection(con);
+        ArrayList<MemberHistoryVO> list = dao.getMemberHistory(id);
+        close(con);
+        return list;
+    }
+	
 }

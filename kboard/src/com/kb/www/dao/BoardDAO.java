@@ -102,14 +102,18 @@ public class BoardDAO {
 		return count;
 	}
 
-	// 사용자 회원가입 및 로그인
+	// 사용자 회원가입(member테이블에 insert)
 	public int insertMember(MemberVO memberVO) {
 		PreparedStatement pstmt = null;
 		int count = 0;
 		try {
-			pstmt = con.prepareStatement("insert into member(mb_id, mb_pw) values(?,?)");
+			pstmt = con
+					.prepareStatement("insert into member(mb_id, mb_pw,mb_name,mb_email,mb_gender) values(?,?,?,?,?)");
 			pstmt.setString(1, memberVO.getMb_id());
 			pstmt.setString(2, memberVO.getMb_pw());
+			pstmt.setString(3, memberVO.getMb_name());
+			pstmt.setString(4, memberVO.getMb_email());
+			pstmt.setString(5, memberVO.getMb_gender());
 			count = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,6 +123,7 @@ public class BoardDAO {
 		return count;
 	}
 
+//외래키를 이용하여 sq값에 따른 mb_id 값 입력
 	public int getMemberSequence(String id) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -139,15 +144,20 @@ public class BoardDAO {
 		return mb_sq;
 	}
 
+//member_history테이블에 insert
 	public int insertMemberHistory(MemberHistoryVO memberHisoryVO) {
 		PreparedStatement pstmt = null;
 		int count = 0;
 		try {
-			pstmt = con.prepareStatement("insert into member_history (mb_sq,evt_type) values (?,?)");
+			pstmt = con.prepareStatement(
+					"insert into member_history (mb_sq,evt_type,name,email,gender) values (?,?,?,?,?)");
 			pstmt.setInt(1, memberHisoryVO.getMb_sq());
 			pstmt.setInt(2, memberHisoryVO.getEvt_type());
+			pstmt.setString(3, memberHisoryVO.getName());
+			pstmt.setString(4, memberHisoryVO.getEmail());
+			pstmt.setString(5, memberHisoryVO.getGender());
 			count = pstmt.executeUpdate();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -156,13 +166,15 @@ public class BoardDAO {
 		return count;
 	}
 
+//사용자 로그인
 	public MemberVO getMember(String id) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		MemberVO vo = null;
 		try {
 			// binary는 대소문자 구분 mysqldb는 대소문자 구분해야함
-			pstmt = con.prepareStatement("select sq,mb_id,mb_pw from member where binary(mb_id)=?");
+			pstmt = con.prepareStatement(
+					"select sq,mb_id,mb_pw,mb_name,mb_email,mb_gender from member where binary(mb_id)=?");
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -170,6 +182,9 @@ public class BoardDAO {
 				vo.setMb_sq(rs.getInt("sq"));
 				vo.setMb_id(rs.getString("mb_id"));
 				vo.setMb_pw(rs.getString("mb_pw"));
+				vo.setMb_name(rs.getString("mb_name"));
+				vo.setMb_email(rs.getString("mb_email"));
+				vo.setMb_gender(rs.getString("mb_gender"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -180,6 +195,7 @@ public class BoardDAO {
 		return vo;
 	}
 
+//로그인 기록 갱신
 	public int updateLoginState(MemberVO memberVO) {
 		PreparedStatement pstmt = null;
 		int count = 0;
@@ -194,5 +210,31 @@ public class BoardDAO {
 			close(pstmt);
 		}
 		return count;
+	}
+
+	// member_history 불러오기
+	public ArrayList<MemberHistoryVO> getMemberHistory(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<MemberHistoryVO> list = new ArrayList<MemberHistoryVO>();
+		try {
+			pstmt = con.prepareStatement("select * from member_history");
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				MemberHistoryVO vo = new MemberHistoryVO();
+				vo.setEvt_type(rs.getInt("evt_type"));
+				vo.setDttm(rs.getString("dttm"));
+				vo.setName(rs.getString("name"));
+				vo.setEmail(rs.getString("email"));
+				vo.setGender(rs.getString("gender"));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return list;
 	}
 }
