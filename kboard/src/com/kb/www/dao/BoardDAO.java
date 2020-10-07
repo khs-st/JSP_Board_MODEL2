@@ -147,7 +147,7 @@ public class BoardDAO {
 			pstmt.setInt(1, memberHisoryVO.getMb_sq());
 			pstmt.setInt(2, memberHisoryVO.getEvt_type());
 			count = pstmt.executeUpdate();
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

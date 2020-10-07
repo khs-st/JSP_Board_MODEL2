@@ -20,7 +20,7 @@ public class MemberJoinProcAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		LoginManager lm = LoginManager.getInstance();
- 		if (lm.getMemberId(request.getSession()) != null) {
+		if (lm.getMemberId(request.getSession()) != null) {
 			ActionForward forward = new ActionForward();
 			forward.setPath("/");
 			forward.setRedirect(true);
@@ -32,7 +32,7 @@ public class MemberJoinProcAction implements Action {
 		// sce개념 null검사부터 해야함. 만약 안하면 프로그램이 멈춘다.
 		// 중요!!!!!! 정규표현식 검사하는 클래스파일 만들어 한번에 사용하기 RegExp클래스파일로 사용
 		if (mb_id == null || mb_id.equals("") || !RegExp.checkString(MEMBER_ID, mb_id) || mb_pw == null
-				|| mb_pw.equals("") || !RegExp.checkString(MEMBER_PWD, mb_pw)) {
+				|| mb_pw.equals("") || !RegExp.checkString(MEMBER_PW, mb_pw)) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('잘못된 접근입니다.');location.href='/';</script>");
@@ -54,11 +54,11 @@ public class MemberJoinProcAction implements Action {
 		// 비밀번호 암호화(BCrypt 자바클래스 활용)
 		memberVO.setMb_pw(BCrypt.hashpw(mb_pw, gensalt(12)));
 
-		MemberHistoryVO memberHisoryVO = new MemberHistoryVO();
-		memberHisoryVO.setEvt_type(MEMBER_HISTORY_EVENT_JOIN);
+		MemberHistoryVO memberHistoryVO = new MemberHistoryVO();
+		memberHistoryVO.setEvt_type(MEMBER_HISTORY_EVENT_JOIN);
 
 		BoardService svc = new BoardService();
-		if (!svc.joinMember(memberVO, memberHisoryVO)) {
+		if (!svc.joinMember(memberVO, memberHistoryVO)) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('회원가입에 실패하였습니다.'); location.href='/';</script>");

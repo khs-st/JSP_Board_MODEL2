@@ -11,7 +11,7 @@ import com.kb.www.action.MemberLogoutAction;
 import com.kb.www.common.Action;
 
 public class LoginManager implements HttpSessionBindingListener {
-	private Hashtable LoginUsers = new Hashtable<>();
+	private static Hashtable<Object, Object> LoginUsers = new Hashtable<>();
 
 	private LoginManager() {
 		super();
@@ -27,7 +27,7 @@ public class LoginManager implements HttpSessionBindingListener {
 
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
-		LoginUsers.put(event.getSession(),event.getName());
+		LoginUsers.put(event.getSession(), event.getName());
 	}
 
 	// 로그인 되어있는 리스트에서 제거하는건 valueUnbound에서 함
@@ -40,6 +40,7 @@ public class LoginManager implements HttpSessionBindingListener {
 		LoginUsers.remove(event.getSession());
 	}
 
+	@SuppressWarnings("rawtypes")
 	// 로그아웃 버튼을 직접 눌렀을때 사용
 	public void removeSession(String id) {
 		Enumeration e = LoginUsers.keys();
@@ -53,6 +54,7 @@ public class LoginManager implements HttpSessionBindingListener {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	// sessionId가 key값 (접속하면 sessionId가 발급된다.)
 	public boolean isLogin(String sessionId) {
 		boolean isLogin = false;
@@ -80,6 +82,6 @@ public class LoginManager implements HttpSessionBindingListener {
 	@Override
 	public void valueUnbound(HttpSessionBindingEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

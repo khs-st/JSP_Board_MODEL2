@@ -1,0 +1,97 @@
+
+
+ui는 부트스트랩이용
+와이어프레임--메인페이지에서 게시판,로그인화면으로 넘어갈수있게
+
+회원가입(아이디, 비밀번호, 이름, 나이, 이메일, 성별),회원탈퇴,로그인,회원정보수정,ID/PW찾기(이메일과 아이디로)
+페이지네이션(페이징처리), 에디터(글에 이미지 삽입)과 파일업로드, 글 검색, 영상 스트리밍, 글 crud,
+댓글 기능(대댓글기능빼고), 조회 수와 방문 수 
+
+설계 1번째 db만들기
+2번째 IA만들기(url)
+3번째 코딩
+4번째 블랙박스테스트 해보기(스파이럴)
+5번째 서버세팅 
+
+
+영상 스트리밍( 주소복사)
+사진 기능
+
+테이블 총 5개 ----> 게시판 테이블 kboard,
+		사용자 테이블 member, memberhistory,
+		댓글 테이블 comment,
+		추천수 테이블 recommend
+
+ 
+댓글 기능
+
+사용자 프로필 간단하게
+사용자 닉네임
+사용자 자기소개(간단한1줄정도)
+사용자 대표사진
+
+
+
+
+댓글 테이블
+댓글번호 글번호 회원번호 댓글쓴내용
+
+
+ 글에 추천 한번만누를수있게
+recommend fl
+db에 글번호랑 회원번호(mb_sq 외래키) 넣기
+
+
+
+kboard의 mb_sq가  외래키로  member테이블의 sq참조
+
+create table kboard(
+num int auto_increment primary key,
+mb_sq int,
+subject varchar(100) not null,
+content text,
+hit int default 0,
+wdate datetime default now(),
+udate datetime,
+ddate datetime);
+
+member
+
+create table member(
+sq int auto_increment primary key,
+mb_id varchar(50),
+mb_pw varchar(200),
+login_st tinyint default 0,
+leave_fl tinyint default 0);
+
+
+member_history의 mb_sq가 외래키로 member 테이블의 sq참조
+
+create table member_history(
+sq int primary key,
+mb_sq int,
+evt_type tinyint,
+dttm datetime default current_timestamp);
+
+
+recommend 외래키num
+
+create table recommend(
+num int,
+mb_sq int,
+recommend_fl tinyint default 0);
+
+
+
+comment
+
+create table comment(
+comment_num int,
+num int,
+mb_sq int,
+comment_content text);
+
+
+
+
+

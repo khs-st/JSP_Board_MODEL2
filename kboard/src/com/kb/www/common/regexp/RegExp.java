@@ -8,13 +8,13 @@ public class RegExp {
 	public static final int ARTICLE_SUBJECT=1;
 	public static final int ARTICLE_CONTENT=2;
 	public static final int MEMBER_ID=3;
-	public static final int MEMBER_PWD=4;
+	public static final int MEMBER_PW=4;
 	
 	public static final String EXP_PAGE_NUM="[0-9]*$";
 	public static final String EXP_ARTICLE_SUBJECT="^.{1,100}$";
 	public static final String EXP_ARTICLE_CONTENT="^.{1,65535}$";
-	public static final String EXP_MEMBER_ID="^[a-z0-9] {4,20}$";
-	public static final String EXP_MEMBER_PWD="^.{4,30}$";
+	public static final String EXP_MEMBER_ID="^[a-z0-9]{4,20}$";
+	public static final String EXP_MEMBER_PW="^.{4,30}$";
 	
 	public static boolean checkString(int type, String data) {
 		boolean result=false;
@@ -31,8 +31,8 @@ public class RegExp {
 		case MEMBER_ID:
 			result=Pattern.matches(EXP_MEMBER_ID, data);
 			break;
-		case MEMBER_PWD:
-			result=Pattern.matches(EXP_MEMBER_PWD, data);
+		case MEMBER_PW:
+			result=Pattern.matches(EXP_MEMBER_PW, data);
 			break;
 		}
 		return result;
