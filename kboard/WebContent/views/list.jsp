@@ -116,7 +116,7 @@ System.out.println(list);
 					</tr>
 					<%
 						if (list.size() > 0) {
-						for (int i = 0; i < 1; i++) {
+						for (int i = 0; i < list.size(); i++) {
 					%>
 					<tr onclick="ShowDetail(<%=list.get(i).getArticleNum()%>)">
 						<td><%=list.get(i).getArticleNum()%></td>
