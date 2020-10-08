@@ -11,8 +11,10 @@ System.out.println(list);
 <head>
 <meta charset="UTF-8">
 <title>일상 게시판</title>
-<script src="https://code.jquery.com/jquery-1.11.3.js"
-	type="text/javascript"></script>
+<!-- 애니매이션 담당 JQUERY -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- 부트스트랩 JS  -->
+<script src="js/bootstrap.js"></script>
 <script type="text/javascript">
 	function ShowDetail(articleNum) {
 		location.href = "detail.do?num=" + articleNum;
@@ -25,11 +27,10 @@ System.out.println(list);
 			$(this).css('color', 'black');
 		});
 	});
-	function searchArticle(){
-		var filter=$('#filter option:selected').val();
-		var keyword=$('#keyword').val();
-		location.href="/list.do?pn=1&filter="+fliter
-				+"&keyword"+keyword;
+	function searchArticle() {
+		var filter = $('#filter option:selected').val();
+		var keyword = $('#keyword').val();
+		location.href = "/list.do?pn=1&filter=" + fliter + "&keyword" + keyword;
 	}
 </script>
 <link rel="stylesheet" href="css/custom.css">
@@ -108,66 +109,38 @@ System.out.println(list);
 					</ul></li>
 			</ul>
 		</div>
-	</nav>
 
+	</nav>
 	<!-- 게시판 화면 -->
 	<div class="container">
-		<!-- 검색기능 -->
-		<div class=" pull-right" id="search" style="margin-bottom: 10px;">
-			<select class="btn btn-primary" name="filter" id="filter">
-				<option class="btn btn-primary" value="all">전체</option>
-				<option class="btn btn-primary" value="subject" selected>제목</option>
-				<option class="btn btn-primary" value="contents">내용</option>
-			</select> <input type="text" name="keyword" id="keywrod">
-			<button class="btn btn-primary" onclick="">검색</button>
-		</div>
 		<div class="row">
-			<table class="table table-striped"
-				style="text-align: center; border: 1px solid #dddddd">
-				<thead>
-					<tr>
-						<th colspan="5"
-							style="background-color: #eeeeee; text-align: center;">게시판
-							목록</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td style="background-color: #b7b7ff; text-align: center;">번호</td>
-						<td style="background-color: #b7b7ff; text-align: center;">제목</td>
-						<td style="background-color: #b7b7ff; text-align: center;">조회수</td>
-						<td style="background-color: #b7b7ff; text-align: center;">작성자</td>
-						<td style="background-color: #b7b7ff; text-align: center;">작성날짜</td>
-					</tr>
-					<%
-						if (list.size() > 0) {
-					%>
-					<%
-						for (int i = 0; i < list.size(); i++) {
-					%>
-					<tr onclick="ShowDetail(<%=list.get(i).getArticleNum()%>)">
-						<td><%=list.get(i).getArticleNum()%></td>
-						<td><%=list.get(i).getArticleTitle()%></td>
-						<td><%=list.get(i).getHit()%></td>
-						<td><%=list.get(i).getId()%>
-						<td><%=list.get(i).getWriteDate()%></td>
-					</tr>
-					<%
-						}
-					%>
-					<%
-						} else {
-					%>
-					<tr>
-						<td colspan="5">게시글이 없습니다.</td>
-					</tr>
-					<%
-						}
-					%>
-				</tbody>
-			</table>
+			<form method="post" action="writeAction.jsp">
+				<table class="table table-striped"
+					style="text-align: center; border: 1px solid #dddddd">
+					<thead>
+						<tr>
+							<th colspan="2"
+								style="background-color: #eeeeee; text-allign: center;">게시판
+								글쓰기 양식</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" class="form-control"
+								placeholder="글 제목" name="bbsTitle" maxlength="50"></td>
+						</tr>
+						<tr>
+							<td><textarea class="form-control" placeholder="글 내용"
+									name="bbsContent" maxlength="2048" style="height: 400px;"></textarea></td>
+
+						</tr>
+					</tbody>
+				</table>
+				<button class="btn btn-primary pull-right" onclick="location.href='list.jsp'">게시판 목록으로 이동</button>
+			</form>
 		</div>
-		<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
 	</div>
+
 </body>
 </html>

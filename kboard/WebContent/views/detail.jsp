@@ -112,6 +112,17 @@
 				</tbody>
 			</table>
 		</div>
+		<button  class="btn btn-primary pull-right"  onclick="location.href='/list.do'">뒤로가기</button>
+		<%
+			if (id != null && id.equals(vo2.getId())) {
+		%>
+		<button  class="btn btn-primary pull-right" 
+			onclick="location.href='/update.do?'">수정</button>
+		<button  class="btn btn-primary pull-right" 
+			onclick="location.href='/delete.do'">삭제</button>
+		<%
+			}
+		%>
 	</div>
 </body>
 </html>

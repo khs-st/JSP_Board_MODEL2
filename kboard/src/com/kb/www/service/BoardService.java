@@ -23,7 +23,7 @@ public class BoardService {
 		memberHistoryVO.setMb_sq(dao.getMemberSequence(memberVO.getMb_id()));
 		// auto increment인 mb_sq를 Memberhistory 테이블에 저장!
 		int count_02 = dao.insertMemberHistory(memberHistoryVO);
-		// 둘중 하나라도 0보다 작으면 member 테이블에 커밋이 안됨
+		// 셋중 하나라도 0보다 작으면 member 테이블에 커밋이 안됨
 		if (count_01 > 0 && count_02 > 0) {
 			commit(con);
 			isSuccess = true;
@@ -32,6 +32,20 @@ public class BoardService {
 		}
 		close(con);
 		return isSuccess;
+	}
+
+	public boolean isDuplicatedId(String id) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		boolean isDupId = dao.getMemberId(id);
+		if (isDupId == false) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		close(con);
+		return isDupId;
 	}
 
 	public MemberVO getMember(String id) {
@@ -129,17 +143,17 @@ public class BoardService {
 		close(con);
 		return article;
 	}
-	
-	//Member History
-    public ArrayList<MemberHistoryVO> getMemberHistory(String id) {
-        BoardDAO dao = BoardDAO.getInstance();
-        //JdbcUtil의 getConnection을 이용해서 mysqldb와 연결
-        Connection con = getConnection();
-        //dao와 mysqldb의 데이터를 con을 이용해서 공유
-        dao.setConnection(con);
-        ArrayList<MemberHistoryVO> list = dao.getMemberHistory(id);
-        close(con);
-        return list;
-    }
-	
+
+	// Member History
+	public ArrayList<MemberHistoryVO> getMemberHistory(String id) {
+		BoardDAO dao = BoardDAO.getInstance();
+		// JdbcUtil의 getConnection을 이용해서 mysqldb와 연결
+		Connection con = getConnection();
+		// dao와 mysqldb의 데이터를 con을 이용해서 공유
+		dao.setConnection(con);
+		ArrayList<MemberHistoryVO> list = dao.getMemberHistory(id);
+		close(con);
+		return list;
+	}
+
 }

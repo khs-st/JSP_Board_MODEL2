@@ -144,6 +144,31 @@ public class BoardDAO {
 		return mb_sq;
 	}
 
+	// 아이디 중복체크를 위해 아이디 불러오기
+	public boolean getMemberId(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean isChk=false;
+		try {
+			pstmt = con.prepareStatement("select mb_id from member where mb_id=?");
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				if (rs.getString("mb_id").equals(id)) {
+					isChk=true;
+				} else {
+					isChk=false;
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return isChk;
+	}
+
 //member_history테이블에 insert
 	public int insertMemberHistory(MemberHistoryVO memberHisoryVO) {
 		PreparedStatement pstmt = null;
