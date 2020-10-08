@@ -25,6 +25,12 @@ System.out.println(list);
 			$(this).css('color', 'black');
 		});
 	});
+	function searchArticle(){
+		var filter=$('#filter option:selected').val();
+		var keyword=$('#keyword').val();
+		location.href="/list.do?pn=1&filter="+fliter
+				+"&keyword"+keyword;
+	}
 </script>
 <link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -57,8 +63,9 @@ System.out.println(list);
 		<div class="collapse navbar-collapse"
 			id="#bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="index.jsp">메인</a></li>
-				<li class="active"><a href="/list.do">게시판</a></li>
+				<li class="active"><a href="index.jsp">메인</a></li>
+				<!-- <--- 현재 접속 페이지가 메인이란 걸 알려줌 -->
+				<li><a href="/list.do">게시판</a></li>
 				<li><a href="index.jsp">공지사항</a></li>
 				<li><a href="/list.do">1:1 문의</a></li>
 			</ul>
@@ -72,28 +79,45 @@ System.out.println(list);
 					aria-expanded="false">접속하기<span class="caret"></span></a>
 
 					<ul class="dropdown-menu">
+
 						<li><a href="/login.do">로그인</a></li>
 						<li><a href="/join.do">회원가입</a></li>
+
 					</ul></li>
 			</ul>
 			<%
-				} else {
+				}
+			if (id != null) {
 			%>
 			<ul class="nav navbar-nav navbar-right">
 
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown" role="button" aria-haspopup="true"
-					aria-expanded="false">회원관리<span class="caret"></span></a>
+					aria-expanded="false"><%=id%>님<span class="caret"></span></a>
 
 					<ul class="dropdown-menu">
-						<li><a href="logout.do">로그아웃</a></li>
+						<li><a href="/logout.do">로그아웃</a></li>
+						<li><a href="/updateinfo.do">회원정보수정</a></li>
+						<%
+							}
+						if (id != null && id.equals("admin")) {
+						%>
+						<li><a href="/history.do">회원히스토리</a></li>
+						<%
+							}
+						%>
 					</ul></li>
 			</ul>
-			<%
-				}
-			%>
 		</div>
+
 	</nav>
+	<!-- 검색기능 -->
+	<select name="filter" id="filter">
+		<option value="subject" selected>제목</option>
+		<option value="contents">내용</option>
+	</select>
+	<input type="text" name="keyword" id="keywrod">
+	<button onclick="">검색</button>
 	<!-- 게시판 화면 -->
 	<div class="container">
 		<div class="row">
