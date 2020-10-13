@@ -145,29 +145,29 @@ public class BoardDAO {
 	}
 
 	// 아이디 중복체크를 위해 아이디 불러오기
-	public boolean getMemberId(String id) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		boolean isChk=false;
-		try {
-			pstmt = con.prepareStatement("select mb_id from member where mb_id=?");
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				if (rs.getString("mb_id").equals(id)) {
-					isChk=true;
-				} else {
-					isChk=false;
-				}
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		return isChk;
-	}
+//	public boolean getMemberId(String id) {
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		boolean isChk = false;
+//		try {
+//			pstmt = con.prepareStatement("select mb_id from member where mb_id=?");
+//			pstmt.setString(1, id);
+//			rs = pstmt.executeQuery();
+//			while (rs.next()) {
+//				if (rs.getString("mb_id").equals(id)) {
+//					isChk = true;
+//				} else {
+//					isChk = false;
+//				}
+//
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			close(pstmt);
+//		}
+//		return isChk;
+//	}
 
 //member_history테이블에 insert
 	public int insertMemberHistory(MemberHistoryVO memberHisoryVO) {
@@ -232,6 +232,27 @@ public class BoardDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			close(pstmt);
+		}
+		return count;
+	}
+
+//로그인 중복체크를 위한 멤버카운트
+	public int getMemberCount(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("select count(*) from member" + " where binary(mb_id)=?");
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
 			close(pstmt);
 		}
 		return count;

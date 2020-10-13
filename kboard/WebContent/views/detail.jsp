@@ -1,50 +1,47 @@
 <%@page import="com.kb.www.vo.ArticleVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%
 	ArticleVO vo2 = (ArticleVO) request.getAttribute("article");
+LoginManager lm = LoginManager.getInstance();
+String id = lm.getMemberId(session);
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>일상 게시판</title>
+<!-- 애니매이션 담당 JQUERY -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- 부트스트랩 JS  -->
+<script src="js/bootstrap.js"></script>
+
 <link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
-	<%
-		String id = null;
-	if (session.getAttribute("id") != null) {
-		id = (String) session.getAttribute("id");
-	}
-	%>
 	<nav class="navbar navbar-default">
 
 		<div class="navbar-header">
-
 			<button type="button" class="navbar-toggle collapsed"
 				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
 				aria-expaned="false">
-
 				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
-
 			</button>
-
 			<a class="navbar-brand" href="index.jsp">kobalja의 게시판</a>
-
 		</div>
 
 		<div class="collapse navbar-collapse"
 			id="#bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="index.jsp">메인</a></li>
-				<li class="active"><a href="list.do">게시판</a></li>
+				<!-- <--- 현재 접속 페이지가 메인이란 걸 알려줌 -->
+				<li class="active"><a href="/list.do">게시판</a></li>
 				<li><a href="index.jsp">공지사항</a></li>
-				<li><a href="list">1:1 문의</a></li>
+				<li><a href="/list.do">1:1 문의</a></li>
 			</ul>
 			<%
 				if (id == null) {
@@ -57,28 +54,35 @@
 
 					<ul class="dropdown-menu">
 
-						<li><a href="login.do">로그인</a></li>
-						<li><a href="join.do">회원가입</a></li>
+						<li><a href="/login.do">로그인</a></li>
+						<li><a href="/join.do">회원가입</a></li>
 
 					</ul></li>
 			</ul>
 			<%
-				} else {
+				}
+			if (id != null) {
 			%>
 			<ul class="nav navbar-nav navbar-right">
 
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown" role="button" aria-haspopup="true"
-					aria-expanded="false">회원관리<span class="caret"></span></a>
-
+					aria-expanded="false"><%=id%>님<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="logoutAction.jsp">로그아웃</a></li>
+						<li><a href="/logout.do">로그아웃</a></li>
+						<li><a href="/updateinfo.do">회원정보수정</a></li>
+						<%
+							}
+						if (id != null && id.equals("admin")) {
+						%>
+						<li><a href="/history.do">회원히스토리</a></li>
+						<%
+							}
+						%>
 					</ul></li>
 			</ul>
-			<%
-				}
-			%>
 		</div>
+
 	</nav>
 	<!-- 게시판 화면 -->
 	<div class="container">
@@ -112,13 +116,14 @@
 				</tbody>
 			</table>
 		</div>
-		<button  class="btn btn-primary pull-right"  onclick="location.href='/list.do'">뒤로가기</button>
+		<button class="btn btn-primary pull-right"
+			onclick="location.href='/list.do'">뒤로가기</button>
 		<%
 			if (id != null && id.equals(vo2.getId())) {
 		%>
-		<button  class="btn btn-primary pull-right" 
+		<button class="btn btn-primary pull-right"
 			onclick="location.href='/update.do?'">수정</button>
-		<button  class="btn btn-primary pull-right" 
+		<button class="btn btn-primary pull-right"
 			onclick="location.href='/delete.do'">삭제</button>
 		<%
 			}

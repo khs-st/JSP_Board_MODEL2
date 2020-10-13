@@ -2,15 +2,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%
 	ArrayList<ArticleVO> list = (ArrayList<ArticleVO>) request.getAttribute("list");
-System.out.println(list);
+LoginManager lm = LoginManager.getInstance();
+String id = lm.getMemberId(session);
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>일상 게시판</title>
+<!-- 애니매이션 담당 JQUERY -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- 부트스트랩 JS  -->
+<script src="js/bootstrap.js"></script>
+
 <script src="https://code.jquery.com/jquery-1.11.3.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
@@ -18,13 +26,6 @@ System.out.println(list);
 		location.href = "detail.do?num=" + articleNum;
 	}
 
-	$(document).ready(function() {
-		$('tr').hover(function() {
-			$(this).css('color', 'blue');
-		}, function() {
-			$(this).css('color', 'black');
-		});
-	});
 	function searchArticle(){
 		var filter=$('#filter option:selected').val();
 		var keyword=$('#keyword').val();
@@ -37,12 +38,6 @@ System.out.println(list);
 <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
-	<%
-		String id = null;
-	if (session.getAttribute("id") != null) {
-		id = (String) session.getAttribute("id");
-	}
-	%>
 	<nav class="navbar navbar-default">
 
 		<div class="navbar-header">

@@ -13,7 +13,7 @@ public class MemberJoinFormAction implements Action {
 		LoginManager lm = LoginManager.getInstance();
 		ActionForward forward = new ActionForward();
 		if (lm.getMemberId(request.getSession()) == null) {
-			forward.setPath("/joinPage/joinForm.jsp");
+			forward.setPath("/views/joinPage/joinForm.jsp");
 			forward.setRedirect(false);
 		}
 		return forward;

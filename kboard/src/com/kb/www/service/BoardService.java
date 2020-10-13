@@ -34,19 +34,30 @@ public class BoardService {
 		return isSuccess;
 	}
 
-	public boolean isDuplicatedId(String id) {
+	// 아이디 중복검사
+	public int getMemberCount(String id) {
 		BoardDAO dao = BoardDAO.getInstance();
 		Connection con = getConnection();
 		dao.setConnection(con);
-		boolean isDupId = dao.getMemberId(id);
-		if (isDupId == false) {
-			commit(con);
-		} else {
-			rollback(con);
-		}
+		int count = dao.getMemberCount(id);
 		close(con);
-		return isDupId;
+		return count;
 	}
+
+	// 중복체크 내가한것 옛날버전임
+//	public boolean isDuplicatedId(String id) {
+//		BoardDAO dao = BoardDAO.getInstance();
+//		Connection con = getConnection();
+//		dao.setConnection(con);
+//		boolean isDupId = dao.getMemberId(id);
+//		if (isDupId == false) {
+//			commit(con);
+//		} else {
+//			rollback(con);
+//		}
+//		close(con);
+//		return isDupId;
+//	}
 
 	public MemberVO getMember(String id) {
 		BoardDAO dao = BoardDAO.getInstance();

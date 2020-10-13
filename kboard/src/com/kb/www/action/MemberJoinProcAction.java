@@ -70,17 +70,17 @@ public class MemberJoinProcAction implements Action {
 
 		BoardService svc = new BoardService();
 		// 아이디 중복체크
-		if (svc.isDuplicatedId(mb_id) != false) {
-			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('이미 존재하는 아이디입니다.');location.href='/';</script>");
-			out.close();
-			return null;
-		}
+//		if (svc.isDuplicatedId(mb_id) != false) {
+//			response.setContentType("text/html;charset=UTF-8");
+//			PrintWriter out = response.getWriter();
+//			out.println("<script>alert('이미 존재하는 아이디입니다.');location.href='/join.do';</script>");
+//			out.close();
+//			return null;
+//		}
 		if (!svc.joinMember(memberVO, memberHistoryVO)) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
-			out.println("<script>alert('회원가입에 실패하였습니다.'); location.href='/';</script>");
+			out.println("<script>alert('회원가입에 실패하였습니다.'); location.href='/join.do';</script>");
 			out.close();
 		}
 

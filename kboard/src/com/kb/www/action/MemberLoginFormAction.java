@@ -10,7 +10,7 @@ public class MemberLoginFormAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ActionForward forward = new ActionForward();
-		forward.setPath("/loginPage/loginForm.jsp");
+		forward.setPath("/views/loginPage/loginForm.jsp");
 		forward.setRedirect(true);
 		return forward;
 	}

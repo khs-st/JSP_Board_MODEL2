@@ -9,27 +9,31 @@ String id = lm.getMemberId(session);
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- 뷰포트 -->
+
+<meta name="viewport" content="width=device-width" initial-scale="1">
 <title>프로젝트 게시판 웹사이트</title>
-<link rel="stylesheet" href="css/custom.css">
+<!-- 애니매이션 담당 JQUERY -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- 부트스트랩 JS  -->
+<script src="js/bootstrap.js"></script>
+
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
 	<nav class="navbar navbar-default">
-
 		<div class="navbar-header">
-
 			<button type="button" class="navbar-toggle collapsed"
 				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
 				aria-expaned="false">
-
 				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
-
 			</button>
-
 			<a class="navbar-brand" href="index.jsp">kobalja의 게시판</a>
-
 		</div>
 
 		<div class="collapse navbar-collapse"
@@ -81,8 +85,8 @@ String id = lm.getMemberId(session);
 					</ul></li>
 			</ul>
 		</div>
-
 	</nav>
+
 	<!-- 점보트론 -->
 	<div class="container">
 		<div class="jumbotron">
@@ -121,12 +125,5 @@ String id = lm.getMemberId(session);
 			</a>
 		</div>
 	</div>
-	<!-- 애니매이션 담당 JQUERY -->
-
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
-	<!-- 부트스트랩 JS  -->
-
-	<script src="js/bootstrap.js"></script>
 </body>
 </html>

@@ -49,4 +49,12 @@ public class RegExp {
 		return result;
 	}
 	
+	public String chgTostr(String str) {
+		str=str.replaceAll("&", "&amp;");
+		str=str.replaceAll("<", "&lt;");
+		str=str.replaceAll(">", "&gt;");
+		str=str.replaceAll("'", "&amp;");
+		str=str.replaceAll("\"", "&amp;");
+	}
+	
 }
