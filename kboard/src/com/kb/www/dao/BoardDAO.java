@@ -40,13 +40,17 @@ public class BoardDAO {
 		ResultSet rs = null;
 		ArrayList<ArticleVO> list = new ArrayList<ArticleVO>();
 		try {
-			pstmt = con.prepareStatement("select * from kboard.kboard");
+			pstmt = con.prepareStatement("select " + "b.num" + ",m.mb_id," + "b.subject," + "b.content," + "b.hit,"
+					+ "b.wdate" + " from kboard b" + " inner join member m on b.mb_sq = m.sq");
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ArticleVO vo = new ArticleVO();
 				vo.setArticleNum(rs.getInt("num"));
 				vo.setArticleTitle(rs.getString("subject"));
+				vo.setArticleContent(rs.getString("content"));
 				vo.setHit(rs.getInt("hit"));
+				vo.setWriteDate(rs.getString("wdate"));
+				vo.setId(rs.getString("mb_id"));
 				list.add(vo);
 			}
 		} catch (Exception e) {
@@ -64,7 +68,9 @@ public class BoardDAO {
 		ResultSet rs = null;
 		ArticleVO vo2 = null;
 		try {
-			pstmt = con.prepareStatement("select * from kboard where num=?");
+			pstmt = con.prepareStatement("select" + " b.num" + ", b.mb_sq" + ", b.subject" + ", b.content" + ", b.hit"
+					+ ", b.wdate" + ", b.udate" + ", b.ddate" + ", m.mb_id" + " from kboard b"
+					+ " inner join member m on b.mb_sq = m.sq" + " where num=?");
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -73,8 +79,9 @@ public class BoardDAO {
 				vo2.setArticleTitle(rs.getString("subject"));
 				vo2.setArticleContent(rs.getString("content"));
 				vo2.setHit(rs.getInt("hit"));
-				vo2.setWriteDate("wdate");
-				vo2.setWriteDate(rs.getString("udate"));
+				vo2.setWriteDate(rs.getString("wdate"));
+				vo2.setUpdateDate(rs.getString("udate"));
+				vo2.setDeleteDate(rs.getString("ddate"));
 				vo2.setId(rs.getString("mb_id"));
 			}
 		} catch (Exception e) {
@@ -84,6 +91,86 @@ public class BoardDAO {
 			close(pstmt);
 		}
 		return vo2;
+	}
+
+	// insertArticle 글쓰기 구현
+	public int insertArticle(ArticleVO vo) {
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("insert into kboard (mb_sq,subject, content) values(?,?,?)");
+			pstmt.setInt(1, vo.getMb_sq());
+			pstmt.setString(2, vo.getArticleTitle());
+			pstmt.setString(3, vo.getArticleContent());
+			count = pstmt.executeUpdate();
+			commit(con);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return count;
+	}
+
+	// updateArticle 글 수정 구현
+	public int updateArticle(ArticleVO vo) {
+		PreparedStatement pstmt = null;
+		String NowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+		vo.setUpdateDate(NowDate);
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("update kboard set subject=?, content=?, udate=? where num=?");
+			pstmt.setString(1, vo.getArticleTitle());
+			pstmt.setString(2, vo.getArticleContent());
+			pstmt.setString(3, vo.getUpdateDate());
+			pstmt.setInt(4, vo.getArticleNum());
+			count = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return count;
+	}
+
+	// deleteArticle 글 삭제 구현
+	public int deleteArticle(int num) {
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("delete from kboard where num=?");
+			pstmt.setInt(1, num);
+			count = pstmt.executeUpdate();
+			commit(con);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return count;
+	}
+
+// getWriterId 글 작성자 글 번호로 불러오기
+	public String getWriterId(int num) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String id = null;
+		try {
+			pstmt = con.prepareStatement(
+					"select m.mb_id from kboard b inner join member m on b.mb_sq = m.sq where num=?");
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getString("mb_id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return id;
 	}
 
 	// 조회수 증가 기능
@@ -283,4 +370,5 @@ public class BoardDAO {
 		}
 		return list;
 	}
+
 }

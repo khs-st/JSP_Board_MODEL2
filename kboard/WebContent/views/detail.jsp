@@ -2,8 +2,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
+<%@page import="com.kb.www.vo.MemberVO"%>
 <%
-	ArticleVO vo2 = (ArticleVO) request.getAttribute("article");
+ArticleVO vo2 = (ArticleVO) request.getAttribute("article");
+MemberVO vo=(MemberVO) request.getAttribute("mb_id");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
 %>
@@ -13,13 +15,13 @@ String id = lm.getMemberId(session);
 <meta charset="UTF-8">
 <title>일상 게시판</title>
 <!-- 애니매이션 담당 JQUERY -->
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 <!-- 부트스트랩 JS  -->
 <script src="js/bootstrap.js"></script>
-
-<link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet" href="css/customs.css">
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -70,7 +72,7 @@ String id = lm.getMemberId(session);
 					aria-expanded="false"><%=id%>님<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
-						<li><a href="/updateinfo.do">회원정보수정</a></li>
+						<li><a href="/updateinfo.do?mb_id=<%=vo.getMb_id()%>">회원정보수정</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {
@@ -98,16 +100,16 @@ String id = lm.getMemberId(session);
 				</thead>
 				<tbody>
 					<tr>
-						<td style="background-color: #b7b7ff; text-align: center;">작성자</td>
 						<td style="background-color: #b7b7ff; text-align: center;">번호</td>
+						<td style="background-color: #b7b7ff; text-align: center;">작성자</td>
 						<td style="background-color: #b7b7ff; text-align: center;">제목</td>
 						<td style="background-color: #b7b7ff; text-align: center;">내용</td>
 						<td style="background-color: #b7b7ff; text-align: center;">조회수</td>
 						<td style="background-color: #b7b7ff; text-align: center;">작성날짜</td>
 					</tr>
 					<tr>
-						<td><%=vo2.getId()%>
 						<td><%=vo2.getArticleNum()%></td>
+						<td><%=vo2.getId()%>
 						<td><%=vo2.getArticleTitle()%></td>
 						<td><%=vo2.getArticleContent()%></td>
 						<td><%=vo2.getHit()%></td>
@@ -122,9 +124,9 @@ String id = lm.getMemberId(session);
 			if (id != null && id.equals(vo2.getId())) {
 		%>
 		<button class="btn btn-primary pull-right"
-			onclick="location.href='/update.do?'">수정</button>
+			onclick="location.href='/update.do?num=<%=vo2.getArticleNum()%>'">수정</button>
 		<button class="btn btn-primary pull-right"
-			onclick="location.href='/delete.do'">삭제</button>
+			onclick="location.href='/delete.do?num=<%=vo2.getArticleNum()%>'">삭제</button>
 		<%
 			}
 		%>

@@ -18,13 +18,11 @@ nav {
 h1 {
 	font-family: 'Black Han Sans', sans-serif;
 }
-
 .navbar .navbar-nav {
-	display: inline-block;
-	float: none;
+	/* display: inline-block; */
+	/* float: none; */
 }
 
 .navbar .navbar-collapse {
-	text-align: center;
+	/*text-align: center;*/
 }
-

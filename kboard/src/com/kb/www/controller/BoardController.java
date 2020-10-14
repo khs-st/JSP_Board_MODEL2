@@ -9,9 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kb.www.action.ArticleDeleteAction;
 import com.kb.www.action.ArticleDetailAction;
 import com.kb.www.action.ArticleListAction;
+import com.kb.www.action.ArticleRegisterAction;
+import com.kb.www.action.ArticleUpdateAction;
+import com.kb.www.action.ArticleUpdateProAction;
+import com.kb.www.action.ArticleWriteAction;
 import com.kb.www.action.MemberHistoryAction;
+import com.kb.www.action.MemberInfoFormAction;
+import com.kb.www.action.MemberInfoProAction;
 import com.kb.www.action.MemberJoinFormAction;
 import com.kb.www.action.MemberJoinProcAction;
 import com.kb.www.action.MemberLoginFormAction;
@@ -83,22 +90,76 @@ public class BoardController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (command.equals("/logout.do")) {
+		}
+		// 회원정보수정
+		else if (command.equals("/memberinfo.do")) {
+			action = new MemberInfoFormAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (command.equals("/memberinfoPro.do")) {
+			action = new MemberInfoProAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// 로그아웃
+		else if (command.equals("/logout.do")) {
 			action = new MemberLogoutAction();
 			try {
 				forward = action.execute(request, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (command.equals("/history.do")) {
+		}
+		// 멤버 히스토리
+		else if (command.equals("/history.do")) {
 			action = new MemberHistoryAction();
 			try {
 				forward = action.execute(request, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}else if (command.equals("/register.do")) {
-			action = new MemberHistoryAction();
+		}
+		// 글쓰기
+		else if (command.equals("/write.do")) {
+			action = new ArticleWriteAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (command.equals("/register.do")) {
+			action = new ArticleRegisterAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// 글 수정
+		else if (command.equals("/update.do")) {
+			action = new ArticleUpdateAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (command.equals("/updatePro.do")) {
+			action = new ArticleUpdateProAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// 글 삭제
+		else if (command.equals("/delete.do")) {
+			action = new ArticleDeleteAction();
 			try {
 				forward = action.execute(request, response);
 			} catch (Exception e) {

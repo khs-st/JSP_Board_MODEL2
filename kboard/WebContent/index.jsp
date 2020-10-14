@@ -1,28 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
+<%@page import="com.kb.www.vo.MemberVO" %>
 <%
 	LoginManager lm = LoginManager.getInstance();
+MemberVO vo=(MemberVO) request.getAttribute("mb_id");
 String id = lm.getMemberId(session);
 %>
-<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<!-- 뷰포트 -->
-
-<meta name="viewport" content="width=device-width" initial-scale="1">
 <title>프로젝트 게시판 웹사이트</title>
 <!-- 애니매이션 담당 JQUERY -->
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 <!-- 부트스트랩 JS  -->
 <script src="js/bootstrap.js"></script>
-
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet" href="css/customs.css">
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -39,10 +34,10 @@ String id = lm.getMemberId(session);
 		<div class="collapse navbar-collapse"
 			id="#bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="index.jsp">메인</a></li>
+				<li class="active"><a href="/index.jsp">메인</a></li>
 				<!-- <--- 현재 접속 페이지가 메인이란 걸 알려줌 -->
 				<li><a href="/list.do">게시판</a></li>
-				<li><a href="index.jsp">공지사항</a></li>
+				<li><a href="/index.jsp">공지사항</a></li>
 				<li><a href="/list.do">1:1 문의</a></li>
 			</ul>
 			<%
@@ -73,7 +68,7 @@ String id = lm.getMemberId(session);
 
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
-						<li><a href="/updateinfo.do">회원정보수정</a></li>
+						<li><a href="/updateinfo.do?mb_id=<%=vo.getMb_id()%>">회원정보수정</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

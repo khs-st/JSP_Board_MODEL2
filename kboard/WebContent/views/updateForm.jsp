@@ -2,9 +2,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%
-	ArrayList<ArticleVO> list = (ArrayList<ArticleVO>) request.getAttribute("list");
-System.out.println(list);
+	ArticleVO vo = (ArticleVO) request.getAttribute("article");
+LoginManager lm = LoginManager.getInstance();
+String id = lm.getMemberId(session);
 %>
 <!DOCTYPE html>
 <html>
@@ -15,18 +17,29 @@ System.out.println(list);
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <!-- 부트스트랩 JS  -->
 <script src="js/bootstrap.js"></script>
+
+
+<script>
+	function checkData() {
+		var subject = $('#subject').val();
+		if (!subject) {
+			alert("제목을 입력하세요.");
+			$('#subject').focus();
+			return false;
+		}
+		var content = $('#content').val();
+		if (!content) {
+			alert("내용을 입력하세요.");
+			$('#content').focus();
+			return false;
+		}
+	}
+</script>
 <script type="text/javascript">
 	function ShowDetail(articleNum) {
 		location.href = "detail.do?num=" + articleNum;
 	}
 
-	$(document).ready(function() {
-		$('tr').hover(function() {
-			$(this).css('color', 'blue');
-		}, function() {
-			$(this).css('color', 'black');
-		});
-	});
 	function searchArticle() {
 		var filter = $('#filter option:selected').val();
 		var keyword = $('#keyword').val();
@@ -35,15 +48,9 @@ System.out.println(list);
 </script>
 <link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet" href="css/customs.css">
 </head>
 <body>
-	<%
-		String id = null;
-	if (session.getAttribute("id") != null) {
-		id = (String) session.getAttribute("id");
-	}
-	%>
 	<nav class="navbar navbar-default">
 
 		<div class="navbar-header">
@@ -114,33 +121,39 @@ System.out.println(list);
 	<!-- 게시판 화면 -->
 	<div class="container">
 		<div class="row">
-			<form method="post" action="writeAction.jsp">
+			<form method="post" action="/updatePro.do" onsubmit="checkData()">
 				<table class="table table-striped"
 					style="text-align: center; border: 1px solid #dddddd">
 					<thead>
 						<tr>
 							<th colspan="2"
 								style="background-color: #eeeeee; text-allign: center;">게시판
-								글쓰기 양식</th>
-
+								글수정 양식</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td><input type="text" class="form-control"
-								placeholder="글 제목" name="bbsTitle" maxlength="50"></td>
+								placeholder="글 제목" name="subject" id="subject" maxlength="50"
+								value="<%=vo.getArticleTitle()%>"></td>
 						</tr>
 						<tr>
-							<td><textarea class="form-control" placeholder="글 내용"
-									name="bbsContent" maxlength="2048" style="height: 400px;"></textarea></td>
-
+							<td><textarea class="form-control" name="content"
+									id="content" placeholder="글 내용" maxlength="2048"
+									style="height: 400px;"><%=vo.getArticleContent()%></textarea></td>
 						</tr>
 					</tbody>
 				</table>
-				<button class="btn btn-primary pull-right" onclick="location.href='list.jsp'">게시판 목록으로 이동</button>
+				<input type="hidden" name="num" value="<%=vo.getArticleNum()%>">
+				<input type="submit" class="btn btn-primary pull-right" value="글수정">
 			</form>
-		</div>
-	</div>
+			<br />
 
+		</div>
+		<br />
+		<button class="btn btn-primary pull-right"
+			onclick="location.href='list.jsp'">취소</button>
+
+	</div>
 </body>
 </html>

@@ -14,13 +14,13 @@ String id = lm.getMemberId(session);
 <meta charset="UTF-8">
 <title>일상 게시판</title>
 <!-- 애니매이션 담당 JQUERY -->
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 <!-- 부트스트랩 JS  -->
 <script src="js/bootstrap.js"></script>
-
-<script src="https://code.jquery.com/jquery-1.11.3.js"
-	type="text/javascript"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/customs.css">
 <script type="text/javascript">
 	function ShowDetail(articleNum) {
 		location.href = "detail.do?num=" + articleNum;
@@ -129,9 +129,9 @@ String id = lm.getMemberId(session);
 				<tbody>
 					<tr>
 						<td style="background-color: #b7b7ff; text-align: center;">번호</td>
+						<td style="background-color: #b7b7ff; text-align: center;">작성자</td>
 						<td style="background-color: #b7b7ff; text-align: center;">제목</td>
 						<td style="background-color: #b7b7ff; text-align: center;">조회수</td>
-						<td style="background-color: #b7b7ff; text-align: center;">작성자</td>
 						<td style="background-color: #b7b7ff; text-align: center;">작성날짜</td>
 					</tr>
 					<%
@@ -142,9 +142,9 @@ String id = lm.getMemberId(session);
 					%>
 					<tr onclick="ShowDetail(<%=list.get(i).getArticleNum()%>)">
 						<td><%=list.get(i).getArticleNum()%></td>
+						<td><%=list.get(i).getId()%>
 						<td><%=list.get(i).getArticleTitle()%></td>
 						<td><%=list.get(i).getHit()%></td>
-						<td><%=list.get(i).getId()%>
 						<td><%=list.get(i).getWriteDate()%></td>
 					</tr>
 					<%
@@ -162,7 +162,9 @@ String id = lm.getMemberId(session);
 				</tbody>
 			</table>
 		</div>
-		<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
+		<form action="/write.do">
+			<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
+		</form>
 	</div>
 </body>
 </html>

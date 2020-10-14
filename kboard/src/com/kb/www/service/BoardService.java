@@ -167,4 +167,69 @@ public class BoardService {
 		return list;
 	}
 
+	// 글쓰기 기능
+	public boolean insertArticle(ArticleVO vo) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+		boolean isSuccess = false;
+		int count = dao.insertArticle(vo);
+		if (count > 0) {
+			commit(con);
+			isSuccess = true;
+		} else {
+			rollback(con);
+			return isSuccess;
+		}
+		close(con);
+		return isSuccess;
+	}
+
+	// 글 수정 기능
+	public boolean updateArticle(ArticleVO vo) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+		boolean isSuccess = false;
+		int count = dao.updateArticle(vo);
+		if (count > 0) {
+			commit(con);
+			isSuccess = true;
+		} else {
+			rollback(con);
+		}
+		close(con);
+		return isSuccess;
+	}
+
+	// 글 삭제 기능
+	public boolean deleteArticle(int num) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+		boolean isSuccess = false;
+		int count = dao.deleteArticle(num);
+		if (count > 0) {
+			commit(con);
+			isSuccess = true;
+		} else {
+			rollback(con);
+			return isSuccess;
+		}
+		close(con);
+		return isSuccess;
+	}
+	//글 작성자 글 번호를 이용해 가져오는 기능
+	public String getWriterId(int num) {
+        BoardDAO dao = BoardDAO.getInstance();
+        Connection con = getConnection();
+        dao.setConnection(con);
+        //isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+        String id = dao.getWriterId(num);
+        close(con);
+        return id;
+    }
 }
