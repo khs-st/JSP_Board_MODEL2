@@ -3,8 +3,9 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
+
 <%
-	ArrayList<ArticleVO> list = (ArrayList<ArticleVO>) request.getAttribute("list");
+ArrayList<ArticleVO> list = (ArrayList<ArticleVO>) request.getAttribute("list");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
 %>
@@ -91,7 +92,7 @@ String id = lm.getMemberId(session);
 
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
-						<li><a href="/updateinfo.do">회원정보수정</a></li>
+						<li><a href="/memberinfo.do">회원정보수정</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

@@ -2,10 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
-<%@page import="com.kb.www.vo.MemberVO"%>
 <%
 ArticleVO vo2 = (ArticleVO) request.getAttribute("article");
-MemberVO vo=(MemberVO) request.getAttribute("mb_id");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
 %>
@@ -72,7 +70,7 @@ String id = lm.getMemberId(session);
 					aria-expanded="false"><%=id%>님<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
-						<li><a href="/updateinfo.do?mb_id=<%=vo.getMb_id()%>">회원정보수정</a></li>
+						<li><a href="/memberinfo.do">회원정보수정</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

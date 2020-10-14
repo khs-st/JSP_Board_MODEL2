@@ -17,6 +17,8 @@ public class MemberHistoryAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		BoardService svc = new BoardService();
 		LoginManager lm = LoginManager.getInstance();
+		
+		//현재 로그인 되어있는 id 불러오는 구문
 		String id = lm.getMemberId(request.getSession());
 		if (id == null) {
 			response.setContentType("text/html;charset=UTF-8");

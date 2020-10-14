@@ -34,6 +34,28 @@ public class BoardService {
 		return isSuccess;
 	}
 
+	// 회원정보수정 기능
+	public boolean updateMember(MemberVO memberVO, MemberHistoryVO memberHistoryVO) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+		boolean isSuccess = false;
+		memberHistoryVO.setMb_sq(dao.getMemberSequence(memberVO.getMb_id()));
+		int count_01 = dao.updateMember(memberVO);
+		// auto increment인 mb_sq를 Memberhistory 테이블에 저장!
+		int count_02 = dao.insertMemberHistory(memberHistoryVO);
+		// 셋중 하나라도 0보다 작으면 member 테이블에 커밋이 안됨
+		if (count_01 > 0 && count_02 > 0) {
+			commit(con);
+			isSuccess = true;
+		} else {
+			rollback(con);
+		}
+		close(con);
+		return isSuccess;
+	}
+
 	// 아이디 중복검사
 	public int getMemberCount(String id) {
 		BoardDAO dao = BoardDAO.getInstance();
@@ -58,12 +80,22 @@ public class BoardService {
 //		close(con);
 //		return isDupId;
 //	}
-
+//회원 아이디 가져오기
 	public MemberVO getMember(String id) {
 		BoardDAO dao = BoardDAO.getInstance();
 		Connection con = getConnection();
 		dao.setConnection(con);
 		MemberVO vo = dao.getMember(id);
+		close(con);
+		return vo;
+	}
+
+//회원정보가져오기
+	public MemberVO getMemberInfo(String id) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		MemberVO vo = dao.getMemberInfo(id);
 		close(con);
 		return vo;
 	}
@@ -222,14 +254,15 @@ public class BoardService {
 		close(con);
 		return isSuccess;
 	}
-	//글 작성자 글 번호를 이용해 가져오는 기능
+
+	// 글 작성자 글 번호를 이용해 가져오는 기능
 	public String getWriterId(int num) {
-        BoardDAO dao = BoardDAO.getInstance();
-        Connection con = getConnection();
-        dao.setConnection(con);
-        //isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
-        String id = dao.getWriterId(num);
-        close(con);
-        return id;
-    }
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+		String id = dao.getWriterId(num);
+		close(con);
+		return id;
+	}
 }

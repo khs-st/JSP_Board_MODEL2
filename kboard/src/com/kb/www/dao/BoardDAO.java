@@ -157,8 +157,8 @@ public class BoardDAO {
 		ResultSet rs = null;
 		String id = null;
 		try {
-			pstmt = con.prepareStatement(
-					"select m.mb_id from kboard b inner join member m on b.mb_sq = m.sq where num=?");
+			pstmt = con
+					.prepareStatement("select m.mb_id from kboard b inner join member m on b.mb_sq = m.sq where num=?");
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -201,6 +201,24 @@ public class BoardDAO {
 			pstmt.setString(3, memberVO.getMb_name());
 			pstmt.setString(4, memberVO.getMb_email());
 			pstmt.setString(5, memberVO.getMb_gender());
+			count = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return count;
+	}
+
+	// 사용자 회원정보수정
+	public int updateMember(MemberVO memberVO) {
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("update member set mb_pw=?,mb_email=? where mb_id=?");
+			pstmt.setString(1, memberVO.getMb_pw());
+			pstmt.setString(2, memberVO.getMb_email());
+			pstmt.setString(3, memberVO.getMb_id());
 			count = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -276,6 +294,31 @@ public class BoardDAO {
 			close(pstmt);
 		}
 		return count;
+	}
+
+//사용자 정보 가져오기
+	public MemberVO getMemberInfo(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		MemberVO vo = null;
+		try {
+			// binary는 대소문자 구분 mysqldb는 대소문자 구분해야함
+			pstmt = con.prepareStatement("select mb_id,mb_pw,mb_email from member where binary(mb_id)=?");
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				vo = new MemberVO();
+				vo.setMb_id(rs.getString("mb_id"));
+				vo.setMb_pw(rs.getString("mb_pw"));
+				vo.setMb_email(rs.getString("mb_email"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return vo;
 	}
 
 //사용자 로그인

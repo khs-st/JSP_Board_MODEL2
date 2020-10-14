@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
+<%@page import="com.kb.www.vo.MemberVO"%>
 <%
-	LoginManager lm = LoginManager.getInstance();
+	MemberVO vo = (MemberVO) request.getAttribute("vo");
+LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
 %>
 <html>
@@ -74,6 +76,8 @@ String id = lm.getMemberId(session);
 		//이름 길이, 영,소문자 체크(정규표현식)
 		var regExpName = new RegExp(
 				"^[가-힣]{2,4}|[a-zA-Z]{2,10}\\s[a-zA-Z]{2,10}$", "g");
+		$('#Modify').submit();
+	}
 </script>
 
 <body>
@@ -139,13 +143,14 @@ String id = lm.getMemberId(session);
 		</div>
 	</nav>
 	<div style="width: 750px;" class="container">
-		<form action="/memberinfoPro.do" method="post" id="joinForm">
+		<form action="/memberinfoPro.do" method="post" id="Modify">
 			<h3 style="text-align: center;">회원정보수정</h3>
 			<div class="form-group">
-				<label for="id">아이디 수정</label>
+				<label for="id">아이디</label>
 				<div class="form-group">
 					<input type="text" class="form-control" placeholder="아이디" name="id"
-						id="id" maxlength="20" oninput="initCheckId()">
+						id="id" maxlength="20" oninput="initCheckId()"
+						value="<%=vo.getMb_id()%>" disabled/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -159,9 +164,9 @@ String id = lm.getMemberId(session);
 					id="pw_confirm" maxlength="20">
 			</div>
 			<div class="form-group">
-				<label for="email">이메일</label> <input type="email"
+				<label for="email">이메일 수정</label> <input type="email"
 					class="form-control" placeholder="이메일" id="mb_email"
-					name="mb_email" maxlength="100">
+					name="mb_email" maxlength="100" value="<%=vo.getMb_email()%>">
 			</div>
 			<div class="form-group">
 				<input type="button" class="btn btn-primary form-control"
