@@ -27,6 +27,13 @@ public class MemberHistoryAction implements Action {
 			out.close();
 			return null;
 		}
+		if(!id.equals("admin")) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('관리자가 아니라 접근할 수 없습니다.');location.href='/';</script>");
+			out.close();
+			return null;
+		}
 		ArrayList<MemberHistoryVO> list = svc.getMemberHistory(id);
 		ActionForward forward = new ActionForward();
 		request.setAttribute("list", list);

@@ -16,6 +16,7 @@ import com.kb.www.action.ArticleRegisterAction;
 import com.kb.www.action.ArticleUpdateAction;
 import com.kb.www.action.ArticleUpdateProAction;
 import com.kb.www.action.ArticleWriteAction;
+import com.kb.www.action.LeaveAction;
 import com.kb.www.action.MemberHistoryAction;
 import com.kb.www.action.MemberInfoFormAction;
 import com.kb.www.action.MemberInfoProAction;
@@ -85,6 +86,15 @@ public class BoardController extends HttpServlet {
 			}
 		} else if (command.equals("/login.do")) {
 			action = new MemberLoginFormAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// 회원탈퇴
+		else if (command.equals("/leave.do")) {
+			action = new LeaveAction();
 			try {
 				forward = action.execute(request, response);
 			} catch (Exception e) {
@@ -166,6 +176,7 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+
 		if (forward != null) {
 			if (forward.isRedirect()) {
 				response.sendRedirect(forward.getPath());

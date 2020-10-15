@@ -71,6 +71,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/memberinfo.do">회원정보수정</a></li>
+						<li><a href="/leave.do">회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

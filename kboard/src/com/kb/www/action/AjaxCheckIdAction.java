@@ -15,7 +15,7 @@ public class AjaxCheckIdAction implements Action {
 
 		BoardService service = new BoardService();
 		request.setAttribute("count", service.getMemberCount(id));
-
+		
 		ActionForward forward = new ActionForward();
 		forward.setPath("/views/ajax/checkId.jsp");
 		return forward;

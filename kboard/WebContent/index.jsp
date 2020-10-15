@@ -16,6 +16,18 @@ String id = lm.getMemberId(session);
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/customs.css">
+<script>
+	function confirm_leave() {
+		var confirm_leave = confirm("회원탈퇴를 진행하시겠습니까?");
+
+		if (confirm_leave == true) {
+			alert("회원탈퇴에 성공하였습니다..");
+			location.href="/leave.do";
+		} else if (confirm_leave == false) {
+			alert("취소하였습니다.");
+		}
+	}
+</script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -67,6 +79,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/memberinfo.do">회원정보수정</a></li>
+						<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

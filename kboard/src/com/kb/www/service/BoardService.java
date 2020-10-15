@@ -33,6 +33,27 @@ public class BoardService {
 		close(con);
 		return isSuccess;
 	}
+	//탈퇴한 회원 회원가입 기능
+	public boolean joinLeavedMember(MemberVO memberVO, MemberHistoryVO memberHistoryVO) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+		boolean isSuccess = false;
+		int count_01 = dao.insertLeavedMember(memberVO);
+		memberHistoryVO.setMb_sq(dao.getMemberSequence(memberVO.getMb_id()));
+		// auto increment인 mb_sq를 Memberhistory 테이블에 저장!
+		int count_02 = dao.insertMemberHistory(memberHistoryVO);
+		// 셋중 하나라도 0보다 작으면 member 테이블에 커밋이 안됨
+		if (count_01 > 0 && count_02 > 0) {
+			commit(con);
+			isSuccess = true;
+		} else {
+			rollback(con);
+		}
+		close(con);
+		return isSuccess;
+	}
 
 	// 회원정보수정 기능
 	public boolean updateMember(MemberVO memberVO, MemberHistoryVO memberHistoryVO) {
@@ -62,6 +83,11 @@ public class BoardService {
 		Connection con = getConnection();
 		dao.setConnection(con);
 		int count = dao.getMemberCount(id);
+		if(count==0) {
+			int count2=dao.getLeaveMemberCount(id);
+			count2=count;
+			return count2;
+		}
 		close(con);
 		return count;
 	}
@@ -153,6 +179,32 @@ public class BoardService {
 		int sq = dao.getMemberSequence(id);
 		close(con);
 		return sq;
+	}
+
+	// 회원탈퇴 구현
+	public boolean leaveMember(MemberVO memberVO, MemberHistoryVO memberHisoryVO) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
+		boolean isSuccess = false;
+		memberVO.setMb_sq(dao.getMemberSequence(memberVO.getMb_id()));
+		memberHisoryVO.setName(memberVO.getMb_name());
+		memberHisoryVO.setEmail(memberVO.getMb_email());
+		memberHisoryVO.setGender(memberVO.getMb_gender());
+		memberHisoryVO.setMb_sq(memberVO.getMb_sq());
+		int count_01 = dao.updateLeaveFlag(memberVO);
+		// auto increment인 mb_sq를 Memberhistory 테이블에 저장!
+		int count_02 = dao.insertMemberHistory(memberHisoryVO);
+		// 둘중 하나라도 0보다 작으면 member 테이블에 커밋이 안됨
+		if (count_01 > 0 && count_02 > 0) {
+			commit(con);
+			isSuccess = true;
+		} else {
+			rollback(con);
+		}
+		close(con);
+		return isSuccess;
 	}
 
 //게시글 목록 구현

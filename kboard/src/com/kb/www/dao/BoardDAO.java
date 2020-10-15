@@ -195,12 +195,35 @@ public class BoardDAO {
 		int count = 0;
 		try {
 			pstmt = con
-					.prepareStatement("insert into member(mb_id, mb_pw,mb_name,mb_email,mb_gender) values(?,?,?,?,?)");
+					.prepareStatement("insert into member(mb_id, mb_pw,mb_name,mb_email,mb_gender) values(?,?,?,?,?);");
 			pstmt.setString(1, memberVO.getMb_id());
 			pstmt.setString(2, memberVO.getMb_pw());
 			pstmt.setString(3, memberVO.getMb_name());
 			pstmt.setString(4, memberVO.getMb_email());
 			pstmt.setString(5, memberVO.getMb_gender());
+			count = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return count;
+	}
+
+	// 탈퇴한 사용자 회원가입(동일한 id)
+	public int insertLeavedMember(MemberVO memberVO) {
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement(
+					"update member set mb_pw=?,mb_name=?,mb_email=?,mb_gender=?,leave_fl=? where mb_id=? and sq=? and leave_fl=true");
+			pstmt.setString(1, memberVO.getMb_pw());
+			pstmt.setString(2, memberVO.getMb_name());
+			pstmt.setString(3, memberVO.getMb_email());
+			pstmt.setString(4, memberVO.getMb_gender());
+			pstmt.setBoolean(5, false);
+			pstmt.setString(6, memberVO.getMb_id());
+			pstmt.setInt(7, memberVO.getMb_sq());
 			count = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -228,7 +251,7 @@ public class BoardDAO {
 		return count;
 	}
 
-//외래키를 이용하여 sq값에 따른 mb_id 값 입력
+	// 외래키를 이용하여 sq값에 따른 mb_id 값 입력
 	public int getMemberSequence(String id) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -321,7 +344,7 @@ public class BoardDAO {
 		return vo;
 	}
 
-//사용자 로그인
+	// 사용자 로그인
 	public MemberVO getMember(String id) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -355,9 +378,27 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		int count = 0;
 		try {
-			pstmt = con.prepareStatement("update member set login_st=? where sq=?");
+			pstmt = con.prepareStatement("update member set login_st=? where leave_fl=false and sq=?");
 			pstmt.setBoolean(1, memberVO.isLogin_st());
 			pstmt.setInt(2, memberVO.getMb_sq());
+			count = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return count;
+	}
+
+//회원탈퇴 (leave_fl==0 회원탈퇴 안한것, leave_fl==1 회원탈퇴한것)
+	public int updateLeaveFlag(MemberVO memberVO) {
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("update member set leave_fl=?, login_st=? where sq=?");
+			pstmt.setBoolean(1, memberVO.isLeave_fl());
+			pstmt.setBoolean(2, memberVO.isLogin_st());
+			pstmt.setInt(3, memberVO.getMb_sq());
 			count = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -373,7 +414,28 @@ public class BoardDAO {
 		ResultSet rs = null;
 		int count = 0;
 		try {
-			pstmt = con.prepareStatement("select count(*) from member" + " where binary(mb_id)=?");
+			pstmt = con.prepareStatement("select count(*) from member" + " where binary(mb_id)=? and leave_fl=false");
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return count;
+	}
+
+	// 탈퇴후 중복체크를 위한 멤버카운트
+	public int getLeaveMemberCount(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("select count(*) from member" + " where binary(mb_id)=? and leave_fl=true");
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {

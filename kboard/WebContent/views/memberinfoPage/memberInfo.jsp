@@ -2,7 +2,7 @@
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%@page import="com.kb.www.vo.MemberVO"%>
 <%
-	MemberVO vo = (MemberVO) request.getAttribute("vo");
+MemberVO vo = (MemberVO) request.getAttribute("vo");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
 %>

@@ -56,6 +56,7 @@ public class MemberJoinProcAction implements Action {
 		// Member객체 이용하여 아이디 및 이름,이메일,성별 넣기
 		MemberVO memberVO = new MemberVO();
 		memberVO.setMb_id(mb_id);
+
 		// 비밀번호 암호화(BCrypt 자바클래스 활용)
 		memberVO.setMb_pw(BCrypt.hashpw(mb_pw, gensalt(12)));
 		memberVO.setMb_name(mb_name);
@@ -69,19 +70,22 @@ public class MemberJoinProcAction implements Action {
 		memberHistoryVO.setGender(mb_gender);
 
 		BoardService svc = new BoardService();
-		// 아이디 중복체크
-//		if (svc.isDuplicatedId(mb_id) != false) {
-//			response.setContentType("text/html;charset=UTF-8");
-//			PrintWriter out = response.getWriter();
-//			out.println("<script>alert('이미 존재하는 아이디입니다.');location.href='/join.do';</script>");
-//			out.close();
-//			return null;
-//		}
-		if (!svc.joinMember(memberVO, memberHistoryVO)) {
-			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('회원가입에 실패하였습니다.'); location.href='/join.do';</script>");
-			out.close();
+		memberVO.setMb_sq(svc.getMemberSequence(mb_id));
+		
+		if () {
+			if (!svc.joinLeavedMember(memberVO, memberHistoryVO)) {
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('탈퇴한 회원의 회원가입에 실패하였습니다.'); location.href='/join.do';</script>");
+				out.close();
+			}
+		} else {
+			if (!svc.joinMember(memberVO, memberHistoryVO)) {
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('회원가입에 실패하였습니다.'); location.href='/join.do';</script>");
+				out.close();
+			}
 		}
 
 		ActionForward forward = new ActionForward();
