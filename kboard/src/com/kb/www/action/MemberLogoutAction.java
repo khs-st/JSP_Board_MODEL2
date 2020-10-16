@@ -2,7 +2,6 @@ package com.kb.www.action;
 
 import com.kb.www.common.Action;
 import com.kb.www.common.ActionForward;
-import com.kb.www.common.bcrpyt.*;
 import com.kb.www.common.loginmanager.*;
 import com.kb.www.service.BoardService;
 import com.kb.www.vo.MemberHistoryVO;
@@ -19,30 +18,32 @@ public class MemberLogoutAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		LoginManager lm = LoginManager.getInstance();
-		String mb_id = lm.getMemberId(session);
-		if (mb_id != null) {
-			lm.removeSession(mb_id);
+		String id = lm.getMemberId(session);
+		if (id != null) {
+			try {
+				lm.removeSession(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+
 		ActionForward forward = new ActionForward();
 		forward.setPath("/");
 		forward.setRedirect(true);
 		return forward;
 	}
 
-	public void logoutProc(String mb_id) {
+	public void logoutProc(String id) {
 		MemberVO memberVO = new MemberVO();
-		memberVO.setMb_id(mb_id);
-
-		// 로그인 상태 false로 변경
+		memberVO.setMb_id(id);
 		memberVO.setLogin_st(false);
 
 		MemberHistoryVO memberHistoryVO = new MemberHistoryVO();
 		memberHistoryVO.setEvt_type(MEMBER_HISTORY_EVENT_LOGOUT);
-		
-		BoardService svc = new BoardService();
-		if (!svc.logoutMember(memberVO, memberHistoryVO)) {
-			System.out.println(mb_id + " 회원의 로그아웃 처리에 실패하였습니다.");
+
+		BoardService service = new BoardService();
+		if (!service.logoutMember(memberVO, memberHistoryVO)) {
+			System.out.println(id + " 회원의 로그아웃 처리에 실패하였습니다.");
 		}
 	}
-
 }

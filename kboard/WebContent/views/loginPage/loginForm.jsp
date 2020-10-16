@@ -88,8 +88,6 @@ String id = lm.getMemberId(session);
 			<!-- 점보트론 -->
 
 			<div class="jumbotron" style="padding-top: 20px;">
-
-				<!-- 로그인 정보를 숨기면서 전송post -->
 				<form method="post" action="/loginProc.do"
 					onsubmit="return validateCheck2()">
 					<h3 style="text-align: center;">로그인</h3>
