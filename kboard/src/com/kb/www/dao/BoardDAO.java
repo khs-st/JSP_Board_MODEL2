@@ -344,7 +344,7 @@ public class BoardDAO {
 		return vo;
 	}
 
-	// 사용자 로그인
+	// 사용자 로그인을 위한 정보가져오기
 	public MemberVO getMember(String id) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -353,6 +353,34 @@ public class BoardDAO {
 			// binary는 대소문자 구분 mysqldb는 대소문자 구분해야함
 			pstmt = con.prepareStatement(
 					"select sq,mb_id,mb_pw,mb_name,mb_email,mb_gender from member where binary(mb_id)=?");
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				vo = new MemberVO();
+				vo.setMb_sq(rs.getInt("sq"));
+				vo.setMb_id(rs.getString("mb_id"));
+				vo.setMb_pw(rs.getString("mb_pw"));
+				vo.setMb_name(rs.getString("mb_name"));
+				vo.setMb_email(rs.getString("mb_email"));
+				vo.setMb_gender(rs.getString("mb_gender"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return vo;
+	}
+	//탈퇴한 사용자 정보 가져오기
+	public MemberVO getLeaveMember(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		MemberVO vo = null;
+		try {
+			// binary는 대소문자 구분 mysqldb는 대소문자 구분해야함
+			pstmt = con.prepareStatement(
+					"select sq,mb_id,mb_pw,mb_name,mb_email,mb_gender from member where binary(mb_id)=? and leave_fl=true");
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {

@@ -115,6 +115,15 @@ public class BoardService {
 		close(con);
 		return vo;
 	}
+	//탈퇴한 회원 아이디 가져오기
+	public MemberVO getLeaveMember(String id) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		MemberVO vo = dao.getLeaveMember(id);
+		close(con);
+		return vo;
+	}
 
 //회원정보가져오기
 	public MemberVO getMemberInfo(String id) {

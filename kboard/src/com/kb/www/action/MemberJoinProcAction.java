@@ -56,7 +56,9 @@ public class MemberJoinProcAction implements Action {
 		// Member객체 이용하여 아이디 및 이름,이메일,성별 넣기
 		MemberVO memberVO = new MemberVO();
 		memberVO.setMb_id(mb_id);
-
+		//Member객체 이용하여 탈퇴한 아이디 가져오기
+		MemberVO leaveMemberVO =new MemberVO();
+		leaveMemberVO.setMb_id(mb_id);
 		// 비밀번호 암호화(BCrypt 자바클래스 활용)
 		memberVO.setMb_pw(BCrypt.hashpw(mb_pw, gensalt(12)));
 		memberVO.setMb_name(mb_name);
@@ -72,7 +74,7 @@ public class MemberJoinProcAction implements Action {
 		BoardService svc = new BoardService();
 		memberVO.setMb_sq(svc.getMemberSequence(mb_id));
 		
-		if () {
+		if (mb_id.equals(leaveMemberVO.getMb_id())) {
 			if (!svc.joinLeavedMember(memberVO, memberHistoryVO)) {
 				response.setContentType("text/html;charset=UTF-8");
 				PrintWriter out = response.getWriter();
