@@ -20,14 +20,14 @@ public class MemberInfoProAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		LoginManager lm = LoginManager.getInstance();
+		String mb_id = lm.getMemberId(request.getSession());
 		if (lm.getMemberId(request.getSession()) == null) {
 			ActionForward forward = new ActionForward();
 			forward.setPath("/");
 			forward.setRedirect(true);
 			return forward;
 		}
-		
-		String mb_id = lm.getMemberId(request.getSession());
+
 		String mb_pw = request.getParameter("pw");
 		String pw_confirm = request.getParameter("pw_confirm");
 		String mb_email = request.getParameter("mb_email");
@@ -56,7 +56,7 @@ public class MemberInfoProAction implements Action {
 		memberVO.setMb_id(mb_id);
 		memberVO.setMb_pw(BCrypt.hashpw(mb_pw, gensalt(12)));
 		memberVO.setMb_email(mb_email);
-		
+
 		// MemberHistory객체 이용하여 이메일,성별 넣기
 		MemberHistoryVO memberHistoryVO = new MemberHistoryVO();
 		memberHistoryVO.setEvt_type(MEMBER_HISTORY_EVENT_UPDATE);
@@ -68,11 +68,10 @@ public class MemberInfoProAction implements Action {
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('회원수정에 실패하였습니다.'); location.href='/join.do';</script>");
 			out.close();
-		}
-		else {
+		} else {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
-			out.println("<script>alert('회원수정이 완료되었습니다. 다시 로그인하십시오.');location.href='/login.do';</script>");
+			out.println("<script>alert('회원수정이 완료되었습니다.');location.href='/index.jsp';</script>");
 			out.close();
 		}
 

@@ -9,6 +9,8 @@ import com.kb.www.vo.MemberHistoryVO;
 import com.kb.www.vo.MemberVO;
 
 import static com.kb.www.common.JdbcUtil.*;
+import static com.kb.www.constants.Constants.MEMBER_HISTORY_EVENT_JOIN;
+import static com.kb.www.constants.Constants.MEMBER_HISTORY_EVENT_REJOIN;
 
 public class BoardService {
 
@@ -17,6 +19,7 @@ public class BoardService {
 		BoardDAO dao = BoardDAO.getInstance();
 		Connection con = getConnection();
 		dao.setConnection(con);
+		memberHistoryVO.setEvt_type(MEMBER_HISTORY_EVENT_JOIN);
 		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
 		boolean isSuccess = false;
 		int count_01 = dao.insertMember(memberVO);
@@ -38,6 +41,7 @@ public class BoardService {
 		BoardDAO dao = BoardDAO.getInstance();
 		Connection con = getConnection();
 		dao.setConnection(con);
+		memberHistoryVO.setEvt_type(MEMBER_HISTORY_EVENT_REJOIN);
 		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
 		boolean isSuccess = false;
 		int count_01 = dao.insertLeavedMember(memberVO);
@@ -142,6 +146,7 @@ public class BoardService {
 		dao.setConnection(con);
 		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
 		boolean isSuccess = false;
+		memberVO.setLogin_st(true);
 		int count_01 = dao.updateLoginState(memberVO);
 		memberHisoryVO.setMb_sq(dao.getMemberSequence(memberVO.getMb_id()));
 		// auto increment인 mb_sq를 Memberhistory 테이블에 저장!
@@ -158,17 +163,20 @@ public class BoardService {
 	}
 
 	// 로그아웃
-	public boolean logoutMember(MemberVO memberVO, MemberHistoryVO memberHisoryVO) {
+	public boolean logoutMember(MemberVO memberVO, MemberHistoryVO memberHistoryVO) {
 		BoardDAO dao = BoardDAO.getInstance();
 		Connection con = getConnection();
 		dao.setConnection(con);
 		// isSucess만든이유: count로 넘기면 boolean타입도 바꾸고 데이터가 잘안나옴. 디자인패턴 적용위해서
 		boolean isSuccess = false;
 		memberVO.setMb_sq(dao.getMemberSequence(memberVO.getMb_id()));
-		memberHisoryVO.setMb_sq(memberVO.getMb_sq());
+		memberHistoryVO.setMb_sq(memberVO.getMb_sq());
+		memberHistoryVO.setName(memberVO.getMb_name());
+		memberHistoryVO.setGender(memberVO.getMb_gender());
+		memberHistoryVO.setEmail(memberVO.getMb_email());
 		int count_01 = dao.updateLoginState(memberVO);
 		// auto increment인 mb_sq를 Memberhistory 테이블에 저장!
-		int count_02 = dao.insertMemberHistory(memberHisoryVO);
+		int count_02 = dao.insertMemberHistory(memberHistoryVO);
 		// 둘중 하나라도 0보다 작으면 member 테이블에 커밋이 안됨
 		if (count_01 > 0 && count_02 > 0) {
 			commit(con);

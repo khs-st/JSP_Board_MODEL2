@@ -17,35 +17,7 @@ String id = lm.getMemberId(session);
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <!-- 부트스트랩 JS  -->
 <script src="js/bootstrap.js"></script>
-
-
-<script>
-	function checkData() {
-		var subject = $('#subject').val();
-		if (!subject) {
-			alert("제목을 입력하세요.");
-			$('#subject').focus();
-			return false;
-		}
-		var content = $('#content').val();
-		if (!content) {
-			alert("내용을 입력하세요.");
-			$('#content').focus();
-			return false;
-		}
-	}
-</script>
-<script type="text/javascript">
-	function ShowDetail(articleNum) {
-		location.href = "detail.do?num=" + articleNum;
-	}
-
-	function searchArticle() {
-		var filter = $('#filter option:selected').val();
-		var keyword = $('#keyword').val();
-		location.href = "/list.do?pn=1&filter=" + fliter + "&keyword" + keyword;
-	}
-</script>
+<script src="js/custom.js"></script>
 <link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/customs.css">
@@ -105,7 +77,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/updateinfo.do">회원정보수정</a></li>
-						<li><a href="/leave.do">회원탈퇴</a></li>
+						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

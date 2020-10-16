@@ -2,7 +2,7 @@
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%@page import="com.kb.www.vo.MemberVO"%>
 <%
-MemberVO vo = (MemberVO) request.getAttribute("vo");
+	MemberVO vo = (MemberVO) request.getAttribute("vo");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
 %>
@@ -22,64 +22,7 @@ String id = lm.getMemberId(session);
 <link rel="stylesheet" href="css/customs.css">
 <!-- 부트스트랩 JS  -->
 <script src="js/bootstrap.js"></script>
-<script>
-	function validateCheck() {
-		var pw = $('#pw').val();
-		var pw_cofonrim = $('#pw_confirm').val();
-		var mb_name = $('#mb_name').val();
-		var mb_email = $('#mb_email').val();
-
-		if (!pw) {
-			alert("비밀번호를 입력해주세요.");
-			$('#pw').focus();
-			return false;
-		}
-		if (!mb_email) {
-			alert("이메일을 입력해주세요.");
-			$('#mb_email').focus();
-			return false;
-		}
-		if (!pw_cofonrim) {
-			alert("비밀번호확인을 입력해주세요.");
-			$('#pw_confirm').focus();
-			return false;
-		}
-		if (!pw_cofonrim) {
-			alert("비밀번호가 다릅니다.");
-			$('#pw').val("");
-			$('#pw_confirm').val("");
-			$('#pw').focus();
-			return false;
-		}
-
-		//비밀번호 길이, 영,소문자 체크(정규표현식)
-		var regExpPw = new RegExp("^[a-z0-9]{4,30}$", "g");
-		//비밀번호로 실행
-		if (regExpPw.exec(pw) == null) {
-			alert("잘못된 비밀번호 형식입니다.");
-			$('#pw').val("");
-			$('#pw_confirm').val("");
-			$('#pw').focus();
-			return false;
-		}
-		//이메일 길이, 영,소문자 체크(정규표현식)
-		var regExpEmail = new RegExp(
-				"^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$",
-				"g");
-		//이메일로 실행
-		if (regExpEmail.exec(mb_email) == null) {
-			alert("잘못된 이메일 형식입니다.");
-			$('#mb_email').val("");
-			$('#mb_email').focus();
-			return false;
-		}
-		//이름 길이, 영,소문자 체크(정규표현식)
-		var regExpName = new RegExp(
-				"^[가-힣]{2,4}|[a-zA-Z]{2,10}\\s[a-zA-Z]{2,10}$", "g");
-		$('#Modify').submit();
-	}
-</script>
-
+<script src="js/custom.js"></script>
 <body>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
@@ -130,6 +73,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li class="active"><a href="/memberinfo.do">회원정보수정</a></li>
+						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {
@@ -150,7 +94,7 @@ String id = lm.getMemberId(session);
 				<div class="form-group">
 					<input type="text" class="form-control" placeholder="아이디" name="id"
 						id="id" maxlength="20" oninput="initCheckId()"
-						value="<%=vo.getMb_id()%>" disabled/>
+						value="<%=vo.getMb_id()%>" disabled />
 				</div>
 			</div>
 			<div class="form-group">

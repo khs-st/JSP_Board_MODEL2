@@ -9,6 +9,9 @@ public class Parser {
 		case MEMBER_HISTORY_EVENT_JOIN:
 			event = "회원가입";
 			break;
+		case MEMBER_HISTORY_EVENT_REJOIN:
+			event = "재가입";
+			break;
 		case MEMBER_HISTORY_EVENT_UPDATE:
 			event = "수정";
 			break;

@@ -9,52 +9,40 @@ function confirm_leave() {
 	}
 }
 
-function ShowDetail(articleNum) {
-	location.href = "detail.do?num=" + articleNum;
-}
+var isChecked = false;
 
-function searchArticle() {
-	var filter = $('#filter option:selected').val();
-	var keyword = $('#keyword').val();
-	location.href = "/list.do?pn=1&filter=" + fliter + "&keyword" + keyword;
-}
+function checkGender() {
 
-function checkData() {
-	var subject = $('#subject').val();
-	if (!subject) {
-		alert("제목을 입력하세요.");
-		$('#subject').focus();
-		return false;
-	}
-	var content = $('#content').val();
-	if (!content) {
-		alert("내용을 입력하세요.");
-		$('#content').focus();
-		return false;
+	var arrRadio = document.getElementsByName("mb_gender");
+
+	for (var i = 0; i < arrRadio.length; i++) {
+
+		if (arrRadio[i].checked) {
+			alert(arrRadio[i].value + "를 선택하셨습니다.")
+			break;
+		}
 	}
 }
-
-function ShowDetail(articleNum) {
-	location.href = "detail.do?num=" + articleNum;
-}
-
-function searchArticle() {
-	var filter = $('#filter option:selected').val();
-	var keyword = $('#keyword').val();
-	location.href = "/list.do?pn=1&filter=" + fliter + "&keyword" + keyword;
-}
-
-//정규표현식 검사
 
 function validateCheck() {
+	var id = $('#id').val();
 	var pw = $('#pw').val();
 	var pw_cofonrim = $('#pw_confirm').val();
 	var mb_name = $('#mb_name').val();
 	var mb_email = $('#mb_email').val();
-
+	if (!id) {
+		alert("아이디를 입력해주세요.");
+		$('#id').focus();
+		return false;
+	}
 	if (!pw) {
 		alert("비밀번호를 입력해주세요.");
 		$('#pw').focus();
+		return false;
+	}
+	if (!mb_name) {
+		alert("이름을 입력해주세요.");
+		$('#mb_name').focus();
 		return false;
 	}
 	if (!mb_email) {
@@ -72,6 +60,21 @@ function validateCheck() {
 		$('#pw').val("");
 		$('#pw_confirm').val("");
 		$('#pw').focus();
+		return false;
+	}
+
+	if (!isChecked) {
+		alert("아이디 중복 검사를 해주세요.");
+		return false;
+	}
+
+	// 아이디 길이, 영,소문자 체크(정규표현식)
+	var regExpId = new RegExp("^[a-z0-9]{4,20}$", "g");
+	// 아이디로 실행
+	if (regExpId.exec(id) == null) {
+		alert("잘못된 아이디 형식입니다.");
+		$('#id').val("");
+		$('#id').focus();
 		return false;
 	}
 
@@ -99,22 +102,51 @@ function validateCheck() {
 	// 이름 길이, 영,소문자 체크(정규표현식)
 	var regExpName = new RegExp("^[가-힣]{2,4}|[a-zA-Z]{2,10}\\s[a-zA-Z]{2,10}$",
 			"g");
-	$('#Modify').submit();
-}
+	// 이름으로 실행
+	if (regExpName.exec(mb_name) == null) {
+		alert("잘못된 이름 형식입니다.");
+		$('#mb_name').val("");
+		$('#mb_name').focus();
+		return false;
+	}
 
-//로그인폼
-function validateCheck2() {
+	$('#joinForm').submit();
+}
+// 로그인 중복체크(ajax)
+
+function checkId() {
 	var id = $('#id').val();
-	var pw = $('#pw').val();
+
 	if (!id) {
 		alert("아이디를 입력해주세요.");
-		$('#id').focus();
-		return false;
+		return;
 	}
-	if (!pw) {
-		alert("비밀번호를 입력해주세요.");
-		$('#pw').focus();
-		return false;
-	}
+
+	$.ajax({
+		url : "/checkid.ajax",
+		type : "post",
+		data : {
+			id : id
+		},
+		dataType : "json",
+		error : function() {
+			alert("통신 실패");
+		},
+		success : function(data) {
+			if (data.id == "true") {
+				// 중복된 아이디 없음
+				isChecked = true;
+				alert("사용할 수 있는 아이디 입니다.");
+			} else {
+				// 중복된 아이디 있음
+				alert("사용할 수 없는 아이디 입니다.");
+				$('#id').val("");
+				$('#id').focus();
+			}
+		}
+	});
 }
 
+function initCheckId() {
+	isChecked = false;
+}

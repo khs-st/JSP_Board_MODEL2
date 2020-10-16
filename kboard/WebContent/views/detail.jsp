@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%
-ArticleVO vo2 = (ArticleVO) request.getAttribute("article");
+	ArticleVO vo2 = (ArticleVO) request.getAttribute("article");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
 %>
@@ -20,6 +20,7 @@ String id = lm.getMemberId(session);
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/customs.css">
+<script src="js/custom.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -71,7 +72,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/memberinfo.do">회원정보수정</a></li>
-						<li><a href="/leave.do">회원탈퇴</a></li>
+						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

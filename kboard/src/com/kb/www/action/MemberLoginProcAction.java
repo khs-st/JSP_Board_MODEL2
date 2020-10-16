@@ -38,8 +38,9 @@ public class MemberLoginProcAction implements Action {
 			return null;
 		}
 
-		// 로그인 기록 넣기위해 이름,이메일,성별 가져오기
+		// 로그인 상태 true로 변경
 		memberVO.setLogin_st(true);
+		// 로그인 기록 넣기위해 이름,이메일,성별 가져오기
 		MemberHistoryVO memberHistoryVO = new MemberHistoryVO();
 		memberHistoryVO.setMb_sq(memberVO.getMb_sq());
 		memberHistoryVO.setEvt_type(MEMBER_HISTORY_EVENT_LOGIN);
@@ -57,9 +58,7 @@ public class MemberLoginProcAction implements Action {
 
 		// 로그인관리
 		LoginManager lm = LoginManager.getInstance();
-		// 세션은 request에 담겨있음
-		HttpSession session = request.getSession();
-		lm.setSession(session, memberVO.getMb_id());
+		lm.setSession(request.getSession(), memberVO.getMb_id());
 		ActionForward forward = new ActionForward();
 		forward.setPath("/");
 		forward.setRedirect(true);

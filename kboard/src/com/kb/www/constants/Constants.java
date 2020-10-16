@@ -6,4 +6,5 @@ public class Constants {
 	public static final int MEMBER_HISTORY_EVENT_LEAVE = 3;
 	public static final int MEMBER_HISTORY_EVENT_LOGIN = 4;
 	public static final int MEMBER_HISTORY_EVENT_LOGOUT = 5;
+	public static final int MEMBER_HISTORY_EVENT_REJOIN = 6;
 }

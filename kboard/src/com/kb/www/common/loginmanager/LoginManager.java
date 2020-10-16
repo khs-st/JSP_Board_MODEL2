@@ -47,7 +47,7 @@ public class LoginManager implements HttpSessionBindingListener {
 		HttpSession session = null;
 		while (e.hasMoreElements()) {
 			session = (HttpSession) e.nextElement();
-			// session 파괴하고 다시 세션 넣기
+			// id 동일할때 session 파괴
 			if (LoginUsers.get(session).equals(id)) {
 				session.invalidate();
 			}

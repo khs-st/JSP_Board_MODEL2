@@ -22,29 +22,7 @@ String id = lm.getMemberId(session);
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/customs.css">
-<script type="text/javascript">
-function confirm_leave() {
-    var confirm_leave = confirm("회원탈퇴를 진행하시겠습니까?");
-
-    if ( confirm_leave == true ) {
-        alert("회원탈퇴에 성공하였습니다.");
-        location.href="/leave.do";
-    } else if ( confirm_leave == false ) {
-        alert("취소하였습니다.");
-    }
-}
-
-	function ShowDetail(articleNum) {
-		location.href = "detail.do?num=" + articleNum;
-	}
-
-	function searchArticle(){
-		var filter=$('#filter option:selected').val();
-		var keyword=$('#keyword').val();
-		location.href="/list.do?pn=1&filter="+fliter
-				+"&keyword"+keyword;
-	}
-</script>
+<script src="js/custom.js"></script>
 <link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/custom.css">
