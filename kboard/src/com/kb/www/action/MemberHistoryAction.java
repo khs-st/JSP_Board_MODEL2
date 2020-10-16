@@ -17,8 +17,8 @@ public class MemberHistoryAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		BoardService svc = new BoardService();
 		LoginManager lm = LoginManager.getInstance();
-		
-		//현재 로그인 되어있는 id 불러오는 구문
+
+		// 현재 로그인 되어있는 id 불러오는 구문
 		String id = lm.getMemberId(request.getSession());
 		if (id == null) {
 			response.setContentType("text/html;charset=UTF-8");
@@ -27,7 +27,7 @@ public class MemberHistoryAction implements Action {
 			out.close();
 			return null;
 		}
-		if(!id.equals("admin")) {
+		if (!id.equals("admin")) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('관리자가 아니라 접근할 수 없습니다.');location.href='/';</script>");

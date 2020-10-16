@@ -8,11 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kb.www.common.Action;
 import com.kb.www.common.ActionForward;
+import com.kb.www.common.parser.Parser;
 import com.kb.www.common.regexp.RegExp;
 import com.kb.www.service.BoardService;
 import com.kb.www.vo.ArticleVO;
 
-import static com.kb.www.common.regexp.RegExp.PAGE_NUM;
+import static com.kb.www.common.regexp.RegExp.ARTICLE_NUM;
 
 public class ArticleDetailAction implements Action {
 	@Override
@@ -21,7 +22,7 @@ public class ArticleDetailAction implements Action {
 		String num = request.getParameter("num");
 		// sce개념 null검사부터 해야함. 만약 안하면 프로그램이 멈춘다.
 		// 중요!!!!!! 정규표현식 검사하는 클래스파일 만들어 한번에 사용하기 RegExp클래스파일로 사용
-		if (num == null || num.equals("") || !RegExp.checkString(PAGE_NUM, num)) {
+		if (num == null || num.equals("") || !RegExp.checkString(ARTICLE_NUM, num)) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('잘못된 접근입니다.'); location.href='/';</script>");
@@ -45,7 +46,7 @@ public class ArticleDetailAction implements Action {
 			out.close();
 			return null;
 		}
-
+		article.setArticleContent(Parser.chgToHTML(article.getArticleContent()));
 		ActionForward forward = new ActionForward();
 		request.setAttribute("article", article);
 		forward.setPath("/views/detail.jsp");

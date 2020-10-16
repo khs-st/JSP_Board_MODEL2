@@ -2,9 +2,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%
-	ArrayList<ArticleVO> list = (ArrayList<ArticleVO>) request.getAttribute("list");
-System.out.println(list);
+	LoginManager lm = LoginManager.getInstance();
+String id = lm.getMemberId(session);
 %>
 <!DOCTYPE html>
 <html>
@@ -21,12 +22,6 @@ System.out.println(list);
 <link rel="stylesheet" href="css/customs.css">
 </head>
 <body>
-	<%
-		String id = null;
-	if (session.getAttribute("id") != null) {
-		id = (String) session.getAttribute("id");
-	}
-	%>
 	<nav class="navbar navbar-default">
 
 		<div class="navbar-header">
@@ -48,9 +43,9 @@ System.out.println(list);
 			id="#bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="index.jsp">메인</a></li>
-				<li class="active"><a href="/list.do">게시판</a></li>
+				<li class="active"><a href="/list.do?pn=1">게시판</a></li>
 				<li><a href="index.jsp">공지사항</a></li>
-				<li><a href="/list.do">1:1 문의</a></li>
+
 			</ul>
 			<%
 				if (id == null) {
@@ -81,7 +76,7 @@ System.out.println(list);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/updateinfo.do">회원정보수정</a></li>
-						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
+						<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {
@@ -128,7 +123,7 @@ System.out.println(list);
 		</div>
 		<br />
 		<button class="btn btn-primary pull-right"
-			onclick="location.href='list.jsp'">게시판 목록으로 이동</button>
+			onclick="location.href='/list.do?pn=1'">게시판 목록으로 이동</button>
 
 	</div>
 </body>

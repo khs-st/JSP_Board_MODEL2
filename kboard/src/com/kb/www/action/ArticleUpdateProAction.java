@@ -6,7 +6,6 @@ import com.kb.www.common.loginmanager.*;
 import com.kb.www.common.regexp.*;
 import com.kb.www.service.BoardService;
 import com.kb.www.vo.ArticleVO;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,8 @@ import java.io.PrintWriter;
 
 import static com.kb.www.common.regexp.RegExp.ARTICLE_CONTENT;
 import static com.kb.www.common.regexp.RegExp.ARTICLE_SUBJECT;
-import static com.kb.www.common.regexp.RegExp.PAGE_NUM;
+import static com.kb.www.common.regexp.RegExp.ARTICLE_NUM;
+import static com.kb.www.common.regexp.RegExp.IS_NUMBER;
 
 public class ArticleUpdateProAction implements Action {
 	@Override
@@ -35,7 +35,7 @@ public class ArticleUpdateProAction implements Action {
 			out.close();
 			return null;
 		}
-		if (num == null || num.equals("") || !RegExp.checkString(PAGE_NUM, num)) {
+		if (num == null || num.equals("") || !RegExp.checkString(ARTICLE_NUM, num)) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('잘못된 접근입니다.');location.href='/';</script>");
@@ -69,8 +69,25 @@ public class ArticleUpdateProAction implements Action {
 			out.println("<script>alert('글을 수정하는데 실패하였습니다.'); location.href='/';</script>");
 			out.close();
 		}
+		String pageNum = request.getParameter("pn");
+		if (pageNum == null || !RegExp.checkString(IS_NUMBER, pageNum)) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('잘못된 접근입니다.');location.href='/';</script>");
+			out.close();
+			return null;
+		}
+
+		int page = Integer.parseInt(pageNum);
+		if (page < 1) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('잘못된 접근입니다.');location.href='/';</script>");
+			out.close();
+			return null;
+		}
 		ActionForward forward = new ActionForward();
-		forward.setPath("/detail.do?num=" + buff);
+		forward.setPath("/detail.do?pn=" + page + "&num=" + buff);
 		forward.setRedirect(true);
 		return forward;
 	}

@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
-import static com.kb.www.common.regexp.RegExp.PAGE_NUM;
+import static com.kb.www.common.regexp.RegExp.ARTICLE_NUM;
+import static com.kb.www.common.regexp.RegExp.IS_NUMBER;
 
 public class ArticleDeleteAction implements Action {
 	@Override
@@ -29,7 +30,7 @@ public class ArticleDeleteAction implements Action {
 		// sce개념 null검사부터 해야함. 만약 안하면 프로그램이 멈춘다.
 		// 중요!!!!!! 정규표현식 검사하는 클래스파일 만들어 한번에 사용하기 RegExp클래스파일로 사용
 		String num = request.getParameter("num");
-		if (num == null || num.equals("") || !RegExp.checkString(PAGE_NUM, num)) {
+		if (num == null || num.equals("") || !RegExp.checkString(ARTICLE_NUM, num)) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('잘못된 접근입니다.');location.href='/';</script>");
@@ -61,8 +62,25 @@ public class ArticleDeleteAction implements Action {
 			out.close();
 			return null;
 		}
+		String pageNum = request.getParameter("pn");
+		if (pageNum == null || !RegExp.checkString(IS_NUMBER, pageNum)) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('잘못된 접근입니다.');location.href='/';</script>");
+			out.close();
+			return null;
+		}
+
+		int page = Integer.parseInt(pageNum);
+		if (page < 1) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('잘못된 접근입니다.');location.href='/';</script>");
+			out.close();
+			return null;
+		}
 		ActionForward forward = new ActionForward();
-		forward.setPath("/list.do");
+		forward.setPath("/list.do?pn=" + page);
 		forward.setRedirect(true);
 		return forward;
 	}

@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.kb.www.pagenation.Pagenation"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 <%
 	LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
+Pagenation pagenation = (Pagenation) request.getAttribute("pagenation");
+String nowPage = request.getParameter("pn");
 %>
 <html>
 <head>
@@ -35,9 +38,8 @@ String id = lm.getMemberId(session);
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/index.jsp">메인</a></li>
 				<!-- <--- 현재 접속 페이지가 메인이란 걸 알려줌 -->
-				<li><a href="/list.do">게시판</a></li>
+				<li><a href="/list.do?pn=1">게시판</a></li>
 				<li><a href="/index.jsp">공지사항</a></li>
-				<li><a href="/list.do">1:1 문의</a></li>
 			</ul>
 			<%
 				if (id == null) {

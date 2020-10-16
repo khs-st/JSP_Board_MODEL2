@@ -2,12 +2,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
+<%@ page import="com.kb.www.pagenation.Pagenation"%>
 <%@page import="com.kb.www.common.loginmanager.LoginManager"%>
 
 <%
 	ArrayList<ArticleVO> list = (ArrayList<ArticleVO>) request.getAttribute("list");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
+Pagenation pagenation = (Pagenation) request.getAttribute("pagenation");
+String nowPage = request.getParameter("pn");
 %>
 <!DOCTYPE html>
 <html>
@@ -26,6 +29,20 @@ String id = lm.getMemberId(session);
 <link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/custom.css">
+<!-- 페이지네이션을 위한 script 구문 -->
+<script>
+        function goDetail(num) {
+            location.href =
+                "/detail.do?pn=" + <%=nowPage%> +"&num=" + num;
+        }
+
+        function searchArticle() {
+            var filter = $('#filter option:selected').val();
+            var keyword = $('#keyword').val();
+            location.href =
+                "/list.do?pn=1&filter=" + filter + "&keyword=" + keyword;
+        }
+    </script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -49,9 +66,8 @@ String id = lm.getMemberId(session);
 			id="#bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="index.jsp">메인</a></li>
-				<li class="active"><a href="/list.do">게시판</a></li>
+				<li class="active"><a href="/list.do?pn=1">게시판</a></li>
 				<li><a href="index.jsp">공지사항</a></li>
-				<li><a href="/list.do">1:1 문의</a></li>
 			</ul>
 			<%
 				if (id == null) {
@@ -82,7 +98,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/memberinfo.do">회원정보수정</a></li>
-						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
+						<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {
@@ -107,6 +123,7 @@ String id = lm.getMemberId(session);
 			</select> <input type="text" name="keyword" id="keywrod">
 			<button class="btn btn-primary" onclick="">검색</button>
 		</div>
+		<!-- 게시물 목록 -->
 		<div class="row">
 			<table class="table table-striped"
 				style="text-align: center; border: 1px solid #dddddd">
@@ -131,7 +148,7 @@ String id = lm.getMemberId(session);
 					<%
 						for (int i = 0; i < list.size(); i++) {
 					%>
-					<tr onclick="ShowDetail(<%=list.get(i).getArticleNum()%>)">
+					<tr onclick="goDetail(<%=list.get(i).getArticleNum()%>)">
 						<td><%=list.get(i).getArticleNum()%></td>
 						<td><%=list.get(i).getId()%>
 						<td><%=list.get(i).getArticleTitle()%></td>
@@ -152,6 +169,25 @@ String id = lm.getMemberId(session);
 					%>
 				</tbody>
 			</table>
+		</div>
+		<div style="text-align: center; margin: auto;">
+
+			<span> <a
+				href="/list.do?pn=<%=pagenation.getStartPage() - 1%>"
+				class="btn btn-success btn-arraw-left">이전</a>
+			</span>
+			<%
+				for (int i = pagenation.getStartPage(); i <= pagenation.getEndPage(); i++) {
+			%>
+			<span> <a href="/list.do?pn=<%=i%>"> <%=i%>
+			</a>
+			</span>
+			<%
+				}
+			%>
+			<span> <a href="/list.do?pn=<%=pagenation.getEndPage() + 1%>"
+				class="btn btn-success btn=arraw-left">다음</a>
+			</span>
 		</div>
 		<form action="/write.do">
 			<input type="submit" class="btn btn-primary pull-right" value="글쓰기">

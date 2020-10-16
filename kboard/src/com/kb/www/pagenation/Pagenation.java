@@ -4,7 +4,7 @@ public class Pagenation {
 	// 한페이지에 보여줄 글 개수
 	private final int SHOW_ARTICLE_COUNT = 10;
 	// 페이지 번호 묶음
-	private final int PAGE_GROUP = 10;
+	private final int PAGE_GROUP = 5;
 
 	// 현재 페이지 번호
 	private int nowPageNumber;

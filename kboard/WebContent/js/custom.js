@@ -44,7 +44,7 @@ function searchArticle() {
 	location.href = "/list.do?pn=1&filter=" + fliter + "&keyword" + keyword;
 }
 
-//정규표현식 검사
+// 정규표현식 검사
 
 function validateCheck() {
 	var pw = $('#pw').val();
@@ -102,7 +102,7 @@ function validateCheck() {
 	$('#Modify').submit();
 }
 
-//로그인폼
+// 로그인폼
 function validateCheck2() {
 	var id = $('#id').val();
 	var pw = $('#pw').val();
@@ -117,4 +117,3 @@ function validateCheck2() {
 		return false;
 	}
 }
-

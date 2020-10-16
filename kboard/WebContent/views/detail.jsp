@@ -6,6 +6,7 @@
 	ArticleVO vo2 = (ArticleVO) request.getAttribute("article");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
+String nowPage = request.getParameter("pn");
 %>
 <!DOCTYPE html>
 <html>
@@ -21,6 +22,20 @@ String id = lm.getMemberId(session);
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/customs.css">
 <script src="js/custom.js"></script>
+<script>
+	function goDetail(num) {
+		location.href = "/detail.do?pn=" +
+<%=nowPage%>
+	+ "&num=" + num;
+	}
+
+	function searchArticle() {
+		var filter = $('#filter option:selected').val();
+		var keyword = $('#keyword').val();
+		location.href = "/list.do?pn=1&filter=" + filter + "&keyword="
+				+ keyword;
+	}
+</script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -40,9 +55,8 @@ String id = lm.getMemberId(session);
 			<ul class="nav navbar-nav">
 				<li><a href="index.jsp">메인</a></li>
 				<!-- <--- 현재 접속 페이지가 메인이란 걸 알려줌 -->
-				<li class="active"><a href="/list.do">게시판</a></li>
+				<li class="active"><a href="/list.do?pn=1">게시판</a></li>
 				<li><a href="index.jsp">공지사항</a></li>
-				<li><a href="/list.do">1:1 문의</a></li>
 			</ul>
 			<%
 				if (id == null) {
@@ -72,7 +86,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/memberinfo.do">회원정보수정</a></li>
-						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
+						<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {
@@ -119,14 +133,14 @@ String id = lm.getMemberId(session);
 			</table>
 		</div>
 		<button class="btn btn-primary pull-right"
-			onclick="location.href='/list.do'">뒤로가기</button>
+			onclick="location.href='/list.do?pn=<%=nowPage%>'">뒤로가기</button>
 		<%
 			if (id != null && id.equals(vo2.getId())) {
 		%>
 		<button class="btn btn-primary pull-right"
-			onclick="location.href='/update.do?num=<%=vo2.getArticleNum()%>'">수정</button>
+			onclick="location.href='/update.do?pn=<%=nowPage%>&num=<%=vo2.getArticleNum()%>'">수정</button>
 		<button class="btn btn-primary pull-right"
-			onclick="location.href='/delete.do?num=<%=vo2.getArticleNum()%>'">삭제</button>
+			onclick="location.href='/delete.do?pn=<%=nowPage%>&num=<%=vo2.getArticleNum()%>'">삭제</button>
 		<%
 			}
 		%>

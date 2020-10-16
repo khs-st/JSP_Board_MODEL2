@@ -7,6 +7,7 @@
 	ArticleVO vo = (ArticleVO) request.getAttribute("article");
 LoginManager lm = LoginManager.getInstance();
 String id = lm.getMemberId(session);
+String nowPage = request.getParameter("pn");
 %>
 <!DOCTYPE html>
 <html>
@@ -21,6 +22,20 @@ String id = lm.getMemberId(session);
 <link rel="stylesheet" href="css/custom.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/customs.css">
+<script>
+	function goDetail(num) {
+		location.href = "/detail.do?pn=" +
+<%=nowPage%>
+	+ "&num=" + num;
+	}
+
+	function searchArticle() {
+		var filter = $('#filter option:selected').val();
+		var keyword = $('#keyword').val();
+		location.href = "/list.do?pn=1&filter=" + filter + "&keyword="
+				+ keyword;
+	}
+</script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -44,9 +59,9 @@ String id = lm.getMemberId(session);
 			id="#bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="index.jsp">메인</a></li>
-				<li class="active"><a href="/list.do">게시판</a></li>
+				<li class="active"><a href="/list.do?pn=1">게시판</a></li>
 				<li><a href="index.jsp">공지사항</a></li>
-				<li><a href="/list.do">1:1 문의</a></li>
+
 			</ul>
 			<%
 				if (id == null) {
@@ -77,7 +92,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/updateinfo.do">회원정보수정</a></li>
-						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
+						<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {
@@ -94,7 +109,9 @@ String id = lm.getMemberId(session);
 	<!-- 게시판 화면 -->
 	<div class="container">
 		<div class="row">
-			<form method="post" action="/updatePro.do" onsubmit="checkData()">
+			<form method="post"
+				action="/updatePro.do?pn=<%=nowPage%>&num=<%=vo.getArticleNum()%>"
+				onsubmit="checkData()">
 				<table class="table table-striped"
 					style="text-align: center; border: 1px solid #dddddd">
 					<thead>
@@ -124,9 +141,9 @@ String id = lm.getMemberId(session);
 
 		</div>
 		<br />
-		<button class="btn btn-primary pull-right"
-			onclick="location.href='list.jsp'">취소</button>
-
+		<form action="/list.do?pn=<%=nowPage%>">
+			<button class="btn btn-primary pull-right">취소</button>
+		</form>
 	</div>
 </body>
 </html>

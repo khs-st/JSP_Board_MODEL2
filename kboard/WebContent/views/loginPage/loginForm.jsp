@@ -35,9 +35,8 @@ String id = lm.getMemberId(session);
 			<ul class="nav navbar-nav">
 				<li><a href="/index.jsp">메인</a></li>
 				<!-- <--- 현재 접속 페이지가 메인이란 걸 알려줌 -->
-				<li><a href="/list.do">게시판</a></li>
+				<li><a href="/list.do?pn=1">게시판</a></li>
 				<li><a href="/index.jsp">공지사항</a></li>
-				<li><a href="/list.do">1:1 문의</a></li>
 			</ul>
 			<%
 				if (id == null) {
@@ -68,7 +67,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/memberinfo.do">회원정보수정</a></li>
-						<li><button onclick="confirm_leave()">회원탈퇴</button></li>
+							<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.kb.www.dao.BoardDAO;
+import com.kb.www.pagenation.Pagenation;
 import com.kb.www.vo.ArticleVO;
 import com.kb.www.vo.MemberHistoryVO;
 import com.kb.www.vo.MemberVO;
@@ -36,7 +37,8 @@ public class BoardService {
 		close(con);
 		return isSuccess;
 	}
-	//탈퇴한 회원 회원가입 기능
+
+	// 탈퇴한 회원 회원가입 기능
 	public boolean joinLeavedMember(MemberVO memberVO, MemberHistoryVO memberHistoryVO) {
 		BoardDAO dao = BoardDAO.getInstance();
 		Connection con = getConnection();
@@ -87,9 +89,9 @@ public class BoardService {
 		Connection con = getConnection();
 		dao.setConnection(con);
 		int count = dao.getMemberCount(id);
-		if(count==0) {
-			int count2=dao.getLeaveMemberCount(id);
-			count2=count;
+		if (count == 0) {
+			int count2 = dao.getLeaveMemberCount(id);
+			count2 = count;
 			return count2;
 		}
 		close(con);
@@ -119,7 +121,8 @@ public class BoardService {
 		close(con);
 		return vo;
 	}
-	//탈퇴한 회원 아이디 가져오기
+
+	// 탈퇴한 회원 아이디 가져오기
 	public MemberVO getLeaveMember(String id) {
 		BoardDAO dao = BoardDAO.getInstance();
 		Connection con = getConnection();
@@ -225,17 +228,26 @@ public class BoardService {
 	}
 
 //게시글 목록 구현
-	public ArrayList<ArticleVO> getArticleList() {
+	public ArrayList<ArticleVO> getArticleList(Pagenation pagenation, String query) {
 		// TODO Auto-generated method stub
 		BoardDAO dao = BoardDAO.getInstance();
 		// JdbcUtil의 getConnetcion을 이용하여 MysqlDB와 연결
 		Connection con = getConnection();
 		// dao와 mysqldb의 데이터를 con을 사용하여 공유
 		dao.setConnection(con);
-		ArrayList<ArticleVO> list = dao.getArticleList();
+		ArrayList<ArticleVO> list = dao.getArticleList(pagenation, query);
 		close(con);
 		return list;
 	}
+	//페이지네이션
+	public int getArticleCount(String query) {
+        BoardDAO dao = BoardDAO.getInstance();
+        Connection con = getConnection();
+        dao.setConnection(con);
+        int count = dao.getArticleCount(query);
+        close(con);
+        return count;
+    }
 
 //글 내용보기 기능
 	public ArticleVO getArticleDetail(int num) {

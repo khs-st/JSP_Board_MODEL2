@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import com.kb.www.pagenation.Pagenation;
 import com.kb.www.vo.ArticleVO;
 import com.kb.www.vo.MemberHistoryVO;
 import com.kb.www.vo.MemberVO;
@@ -35,13 +36,16 @@ public class BoardDAO {
 	}
 
 //게시글 목록 보기 기능
-	public ArrayList<ArticleVO> getArticleList() {
+	public ArrayList<ArticleVO> getArticleList(Pagenation pagenation, String query) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<ArticleVO> list = new ArrayList<ArticleVO>();
 		try {
-			pstmt = con.prepareStatement("select " + "b.num" + ",m.mb_id," + "b.subject," + "b.content," + "b.hit,"
-					+ "b.wdate" + " from kboard b" + " inner join member m on b.mb_sq = m.sq");
+			pstmt = con.prepareStatement("select b.num" + ", m.mb_id" + ", b.subject" + ", b.content" + ", b.hit"
+					+ ", b.wdate" + " from kboard b" + " inner join member m on b.mb_sq = m.sq" + " where 1=1" + query
+					+ " order by num desc" + " limit ?, ?");
+			pstmt.setInt(1, pagenation.getStartArticleNumber());
+			pstmt.setInt(2, pagenation.getSHOW_ARTICLE_COUNT());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ArticleVO vo = new ArticleVO();
@@ -60,6 +64,26 @@ public class BoardDAO {
 			close(pstmt);
 		}
 		return list;
+	}
+
+	// 게시글 수 카운트
+	public int getArticleCount(String query) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			pstmt = con.prepareStatement("select count(*) from kboard" + " where 1=1" + query);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return count;
 	}
 
 //게시물 내용 보기 기능
@@ -479,7 +503,10 @@ public class BoardDAO {
 		ResultSet rs = null;
 		ArrayList<MemberHistoryVO> list = new ArrayList<MemberHistoryVO>();
 		try {
-			pstmt = con.prepareStatement("select * from member_history");
+			pstmt = con.prepareStatement(
+					"select " + "mh.evt_type " + ", mh.dttm " + ", mh.name " + ", mh.email " + ", mh.gender "
+							+ "from member m " + "left join member_history mh on m.sq = mh.mb_sq " + "where mb_id=?");
+			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				MemberHistoryVO vo = new MemberHistoryVO();
