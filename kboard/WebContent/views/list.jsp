@@ -39,8 +39,7 @@ String nowPage = request.getParameter("pn");
         function searchArticle() {
             var filter = $('#filter option:selected').val();
             var keyword = $('#keyword').val();
-            location.href =
-                "/list.do?pn=1&filter=" + filter + "&keyword=" + keyword;
+            location.href ="/list.do?pn=1&filter=" + filter + "&keyword=" + keyword;
         }
     </script>
 </head>
@@ -117,11 +116,11 @@ String nowPage = request.getParameter("pn");
 		<!-- 검색기능 -->
 		<div class=" pull-right" id="search" style="margin-bottom: 10px;">
 			<select class="btn btn-primary" name="filter" id="filter">
-				<option class="btn btn-primary" value="all">전체</option>
+				<option class="btn btn-primary" value="all" selected>전체</option>
 				<option class="btn btn-primary" value="subject" selected>제목</option>
-				<option class="btn btn-primary" value="contents">내용</option>
+				<option class="btn btn-primary" value="content">내용</option>
 			</select> <input type="text" name="keyword" id="keywrod">
-			<button class="btn btn-primary" onclick="">검색</button>
+			<button class="btn btn-primary" onclick="searchArticle()">검색</button>
 		</div>
 		<!-- 게시물 목록 -->
 		<div class="row">
@@ -172,9 +171,15 @@ String nowPage = request.getParameter("pn");
 		</div>
 		<div style="text-align: center; margin: auto;">
 
-			<span> <a
-				href="/list.do?pn=<%=pagenation.getStartPage() - 1%>"
-				class="btn btn-success btn-arraw-left">이전</a>
+			<span> <%
+ 	if (pagenation.getStartPage() == 1) {
+ %> <a href="/list.do?pn=<%=pagenation.getStartPage()%>"
+				class="btn btn-success btn-arraw-left">이전</a> <%
+ 	} else {
+ %> <a href="/list.do?pn=<%=pagenation.getStartPage() - 1%>"
+				class="btn btn-success btn-arraw-left">이전</a> <%
+ 	}
+ %>
 			</span>
 			<%
 				for (int i = pagenation.getStartPage(); i <= pagenation.getEndPage(); i++) {
@@ -193,5 +198,10 @@ String nowPage = request.getParameter("pn");
 			<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
 		</form>
 	</div>
+	<%
+		System.out.println(pagenation.getStartPage());
+	System.out.println(pagenation.getStartPage());
+	System.out.println(pagenation.getEndPage());
+	%>
 </body>
 </html>

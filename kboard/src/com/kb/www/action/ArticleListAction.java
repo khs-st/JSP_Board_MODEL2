@@ -17,8 +17,8 @@ import static com.kb.www.common.regexp.RegExp.IS_NUMBER;
 public class ArticleListAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		//페이지네이션 후 게시글 불러오기
-		//getArticleCount를 query문으로 변수를 받아 (Webservlet처럼 *.do처럼) query를 이용해 페이지네이션 구현
+		// 페이지네이션 후 게시글 불러오기
+		// getArticleCount를 query문으로 변수를 받아 (Webservlet처럼 *.do처럼) query를 이용해 페이지네이션 구현
 		String pageNum = request.getParameter("pn");
 		if (pageNum == null || !RegExp.checkString(IS_NUMBER, pageNum)) {
 			response.setContentType("text/html;charset=UTF-8");

@@ -9,7 +9,7 @@ public class Pagenation {
 	// 현재 페이지 번호
 	private int nowPageNumber;
 
-	// 글 총 개수
+	// 글 총 개수(row 개수)
 	private int totalArticleCount;
 
 	// 시작 글 번호
