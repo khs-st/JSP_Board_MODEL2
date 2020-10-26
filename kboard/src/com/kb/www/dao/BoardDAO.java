@@ -368,6 +368,28 @@ public class BoardDAO {
 		return vo;
 	}
 
+/*	// 아이디 찾기를 위한 아이디와 이메일 가져오기
+	public String FindMemberId(String name, String email) {
+		PreparedStatement pstmt = null;
+		String mb_id=null;
+		ResultSet rs = null;
+		try {
+			// binary는 대소문자 구분 mysqldb는 대소문자 구분해야함
+			pstmt = con.prepareStatement("select mb_id from member where mb_name=? and mb_email=?");
+			pstmt.setString(1, name);
+			pstmt.setString(2, email);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				mb_id=rs.getString("mb_id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return mb_id;
+	}*/
 	// 사용자 로그인을 위한 정보가져오기
 	public MemberVO getMember(String id) {
 		PreparedStatement pstmt = null;

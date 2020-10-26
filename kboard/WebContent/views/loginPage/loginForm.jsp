@@ -51,7 +51,7 @@ String id = lm.getMemberId(session);
 
 						<li class="active"><a href="/login.do">로그인</a></li>
 						<li><a href="/join.do">회원가입</a></li>
-		
+
 					</ul></li>
 			</ul>
 			<%
@@ -67,7 +67,7 @@ String id = lm.getMemberId(session);
 					<ul class="dropdown-menu">
 						<li><a href="/logout.do">로그아웃</a></li>
 						<li><a href="/memberinfo.do">회원정보수정</a></li>
-							<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
+						<li onclick="confirm_leave()"><a>회원탈퇴</a></li>
 						<%
 							}
 						if (id != null && id.equals("admin")) {
@@ -86,7 +86,7 @@ String id = lm.getMemberId(session);
 		<div class="col-lg-4">
 			<!-- 점보트론 -->
 
-			<div class="jumbotron" style="padding-top: 20px;">
+			<div class="jumbotron" style="margin: auto; , padding-top: 40px;">
 				<form method="post" action="/loginProc.do"
 					onsubmit="return validateCheck2()">
 					<h3 style="text-align: center;">로그인</h3>
@@ -101,6 +101,10 @@ String id = lm.getMemberId(session);
 					<input type="submit" class="btn btn-primary form-control"
 						value="로그인">
 				</form>
+			<!-- <button onclick="location.href='/FindId.do'" style="float: left;"
+					class="radio-inline btn btn-danger">아이디 찾기</button>
+				<button onclick="location.href='/ChangePw.do'" style="float: right;"
+					class="radio-inline btn btn-success">비밀번호 변경</button> -->	
 			</div>
 		</div>
 	</div>

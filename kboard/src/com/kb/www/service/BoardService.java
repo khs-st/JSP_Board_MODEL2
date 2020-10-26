@@ -142,6 +142,16 @@ public class BoardService {
 		return vo;
 	}
 
+/*	//아이디찾기
+	public String FindMemberId(String name, String email) {
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		 String mb_id= dao.FindMemberId(name,email);
+		close(con);
+		return mb_id;
+	}*/
+
 	// 로그인
 	public boolean loginMember(MemberVO memberVO, MemberHistoryVO memberHisoryVO) {
 		BoardDAO dao = BoardDAO.getInstance();
@@ -239,15 +249,16 @@ public class BoardService {
 		close(con);
 		return list;
 	}
-	//페이지네이션
+
+	// 페이지네이션
 	public int getArticleCount(String query) {
-        BoardDAO dao = BoardDAO.getInstance();
-        Connection con = getConnection();
-        dao.setConnection(con);
-        int count = dao.getArticleCount(query);
-        close(con);
-        return count;
-    }
+		BoardDAO dao = BoardDAO.getInstance();
+		Connection con = getConnection();
+		dao.setConnection(con);
+		int count = dao.getArticleCount(query);
+		close(con);
+		return count;
+	}
 
 //글 내용보기 기능
 	public ArticleVO getArticleDetail(int num) {
@@ -346,4 +357,5 @@ public class BoardService {
 		close(con);
 		return id;
 	}
+
 }
