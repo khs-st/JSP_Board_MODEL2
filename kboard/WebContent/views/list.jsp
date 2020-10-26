@@ -119,7 +119,7 @@ String nowPage = request.getParameter("pn");
 				<option class="btn btn-primary" value="all" selected>전체</option>
 				<option class="btn btn-primary" value="subject" selected>제목</option>
 				<option class="btn btn-primary" value="content">내용</option>
-			</select> <input type="text" name="keyword" id="keywrod">
+			</select> <input type="text" name="keyword" id="keyword">
 			<button class="btn btn-primary" onclick="searchArticle()">검색</button>
 		</div>
 		<!-- 게시물 목록 -->
